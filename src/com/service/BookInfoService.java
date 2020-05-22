@@ -14,7 +14,7 @@ public class BookInfoService {
 	 * @return BookInfo
 	 */
 	public static BookInfo getBookInfo(int bookId) {
-		BookInfo bookInfo = getBookInfoById(bookId);
+		BookInfo bookInfo = selectByBookId(bookId);
 		return bookInfo;
 	}
 	
@@ -23,14 +23,14 @@ public class BookInfoService {
 	 * @param bookId
 	 * @return BookInfo
 	 */
-	public static BookInfo getBookInfoById(int bookId) {
-		BookInfo bookInfo = new BookInfo();
-		bookInfo = selectByBookId(bookId);
-		if(bookInfo != null) {
-			return bookInfo;
-		}
-		return null;
-	}
+//	public static BookInfo getBookInfoById(int bookId) {
+//		BookInfo bookInfo = new BookInfo();
+//		bookInfo = selectByBookId(bookId);
+//		if(bookInfo != null) {
+//			return bookInfo;
+//		}
+//		return null;
+//	}
 
 	/**
 	 * 

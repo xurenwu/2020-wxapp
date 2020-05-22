@@ -24,12 +24,12 @@ public class UserDAO {
 		String sql = "select * from user where userId=?";
 		pst = conn.prepareStatement(sql);
 		pst.setInt(1, userId);
-		ResultSet rs = pst.executeQuery();
-		if (rs.next()) {
+		ResultSet rst = pst.executeQuery();
+		if (rst.next()) {
 			User user = new User();
-			user.setUserId(rs.getInt("userId"));
-			user.setName(rs.getString("name"));
-			user.setGender(rs.getString("gender"));
+			user.setUserId(rst.getInt("userId"));
+			user.setName(rst.getString("name"));
+			user.setGender(rst.getString("gender"));
 			return user;
 		} else {
 			return null;

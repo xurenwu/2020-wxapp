@@ -3,6 +3,9 @@ package com.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.pojo.BookInfo.BookInfo;
 import com.pojo.Catelogue.ChapterObject;
@@ -99,6 +102,73 @@ public class BookDAO {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	/**
+	 * 根据category来返回一定数量的书籍信息列表
+	 */
+	
+	public List<BookInfo> selectBookListByCategory(String category,int bookNum){
+		List<BookInfo> booklist = new ArrayList<>();
+		String sql = "select * from bookInfo where category=? order by heat desc";
+		try {
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, category);
+			ResultSet rst = pst.executeQuery();
+			int num = 0;
+			while(rst.next() && num < bookNum) {
+				BookInfo book = new BookInfo();
+				book.setBookId(rst.getInt("bookId"));
+				book.setBookName(rst.getString("bookName"));
+				book.setAuthor(rst.getString("author"));
+				book.setBookImage(rst.getString("bookImage"));
+				book.setCategory(rst.getString("category"));
+				book.setDesc(rst.getString("desc"));
+				book.setEnterTime(rst.getString("enterTime"));
+				book.setHeat(rst.getInt("heat"));
+				book.setLastChapter(rst.getString("lastChapter"));
+				book.setLastChapterUrl(rst.getString("lastChapterUrl"));
+				book.setState(rst.getString("state"));
+				booklist.add(book);
+				num++;
+			}
+			return booklist;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	//ranking
+	public List<BookInfo> selectBookListByHeatOrLatest(int bookNum,String name) {
+		String sql = "select * from bookInfo order by "+name+" desc";
+		List<BookInfo> booklist = new ArrayList<>();
+		try {
+			pst = conn.prepareStatement(sql);
+			ResultSet rst = pst.executeQuery();
+			int num = 0;
+			while(rst.next() && num < bookNum) {
+				BookInfo book = new BookInfo();
+				book.setBookId(rst.getInt("bookId"));
+				book.setBookName(rst.getString("bookName"));
+				book.setAuthor(rst.getString("author"));
+				book.setBookImage(rst.getString("bookImage"));
+				book.setCategory(rst.getString("category"));
+				book.setDesc(rst.getString("desc"));
+				book.setEnterTime(rst.getString("enterTime"));
+				book.setHeat(rst.getInt("heat"));
+				book.setLastChapter(rst.getString("lastChapter"));
+				book.setLastChapterUrl(rst.getString("lastChapterUrl"));
+				book.setState(rst.getString("state"));
+				booklist.add(book);
+				num++;
+			}
+			return booklist;
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
