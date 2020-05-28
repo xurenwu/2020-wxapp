@@ -1,6 +1,7 @@
 package com.service;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import com.dao.BookDAO;
@@ -30,6 +31,10 @@ public class AllChapterService {
 		if(catelogueUrl != null) {
 			catelogue = formdate(catelogueUrl,bookId);
 			if(catelogue != null) {
+				/**
+				 * 插入目录的操作有待商榷,最好可以先获取该书的状态，如果是完结的就不必更新
+				 */
+				insertAllChapter(catelogue, bookId);
 				return catelogue;
 			}else {
 				return null;
@@ -39,6 +44,11 @@ public class AllChapterService {
 		}
 	}
 	
+	/**
+	 * 返回书籍目录地址
+	 * @param bookId
+	 * @return
+	 */
 	public static CatelogueUrl selectBookId(int bookId) {
 		Connection conn = DBUtil.getConnection();
 		CatelogueDAO cataLogueDao = new CatelogueDAO(conn);
@@ -83,14 +93,30 @@ public class AllChapterService {
 		if(catelogue != null) {
 			Connection conn = DBUtil.getConnection();
 			BookDAO bookDAO = new BookDAO(conn);
-			for(i=0;i<catelogue.getAllChapter().size();i++) {
-				if(bookDAO.insertChapter(catelogue.getAllChapter().get(i), bookId)) continue;
-				else break;
-			}
-			if(i == catelogue.getAllChapter().size()) {
-				return true;
-			}else {
-				return false;
+			try {
+				conn.setAutoCommit(false);
+				for(i=0;i<catelogue.getAllChapter().size();i++) {
+					if(bookDAO.insertChapter(catelogue.getAllChapter().get(i), bookId)) continue;
+					else break;
+				}
+				if(i == catelogue.getAllChapter().size()) {
+					conn.commit();
+					return true;
+				}else {
+					conn.rollback();
+					return false;
+				}
+			} catch (SQLException e) {
+				try {
+					conn.rollback();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				e.printStackTrace();
+			} finally {
+				if(conn != null) {
+					DBUtil.closeConnection(conn);
+				}
 			}
 		}
 		return false;

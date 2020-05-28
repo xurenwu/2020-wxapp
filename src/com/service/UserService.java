@@ -2,11 +2,8 @@ package com.service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.dao.UserDAO;
-import com.pojo.baseData.BaseDataPojo;
 import com.pojo.login.User;
 import com.utils.DBUtil;
 
@@ -31,7 +28,7 @@ public class UserService {
 	}
 	
 	//后期更新用户信息，从前端返回用户的昵称和性别
-	public boolean updataById(int userId) {
+	public boolean updata(User user) {
 		return false;
 	}
 }

@@ -16,7 +16,7 @@ public class CategoryService {
 	 */
 	
 	public static void main(String []args) {
-		System.out.println(getBookInfoByCategory("外国小说",10));
+		System.out.println(getBookInfoByCategory("外国小说",10).get(0).getAuthor());
 	}
 	
 	/**

@@ -5,7 +5,6 @@ import java.sql.SQLException;
 
 import com.dao.LoginDAO;
 import com.dao.UserDAO;
-import com.google.gson.Gson;
 import com.pojo.baseData.BaseDataPojo;
 import com.pojo.login.LoginSession;
 import com.pojo.login.User;
@@ -13,7 +12,7 @@ import com.utils.DBUtil;
 
 
 public class LoginService {
-	/*
+	
 	public static void main(String[] args) {
 		// 登录测试
 //		LoginService loginService = new LoginService();
@@ -24,7 +23,13 @@ public class LoginService {
 		LoginService loginService = new LoginService();
 		int id = loginService.checkToken("token_1586333625324");
 		System.out.println(id);		
-	}*/
+	}
+//	public static void main(String[] args) {
+//		LoginService loginService = new LoginService();
+//		User user = new User();
+//		user.setName("新用户");
+//		loginService.addUser(user);
+//	}
 
 	// 处理登录业务
 	public BaseDataPojo<LoginSession> login(String openId, String token) {

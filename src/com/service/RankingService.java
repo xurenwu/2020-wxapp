@@ -18,6 +18,12 @@ public class RankingService {
 		System.out.println(getBookListByHeatOrLatest(12,"enterTime"));
 	}
 	
+	/**
+	 * 
+	 * @param bookNum 书籍数量
+	 * @param name 书籍榜单名{最热：heat， 最新：latest}
+	 * @return
+	 */
 	public static List<BookInfo> getBookListByHeatOrLatest(int bookNum, String name) {
 		List<BookInfo> bookList = new ArrayList<>();
 		Connection conn = DBUtil.getConnection();

@@ -1,4 +1,4 @@
-package com.action.catelogue;
+package com.action.comment;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,13 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.pojo.Catelogue.Catelogue;
-import com.service.AllChapterService;
+import com.pojo.baseData.BaseDataPojo;
+import com.service.CommentService;
 
 /**
  * Servlet implementation class GetCatelogue
  */
-@WebServlet("/getCatelogue")
-public class GetCatelogue extends HttpServlet {
+@WebServlet("/cancelComment")
+public class CancelCommentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -32,17 +33,20 @@ public class GetCatelogue extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		/**
-		 * 通过书籍id获取书籍目录
+		 * 通过评论id撤销评论
 		 */
 		req.setCharacterEncoding("utf-8");
 		res.setContentType("text/html;charset=utf-8");
 		
 		PrintWriter out = res.getWriter();		// 用PrintWriter对象返回数据
 		
-		//获取前台传回的书籍id
-		int bookId = Integer.parseInt(req.getParameter("bookId"));
-		Catelogue chapter = AllChapterService.checkBookId(bookId); 
-		out.print(new Gson().toJson(chapter));
+		int commentId = Integer.parseInt(req.getParameter("commentId"));
+		boolean condition = CommentService.cancleComment(commentId);
+		if(condition) {
+			out.print(new Gson().toJson(new BaseDataPojo<Catelogue> ("撤销成功", true, null)));
+		}else {
+			out.print(new Gson().toJson(new BaseDataPojo<Catelogue> ("撤销失败", false, null)));
+		}
 	}
 
 }

@@ -3,7 +3,7 @@ package com.pojo.baseData;
 import java.util.ArrayList;
 import java.util.List;
 
-/** 封装返回数据的主pojo�? **/
+/** 封装返回数据的主pojo类 **/
 public class BaseListPojo<T> {
 	private boolean success;	// 是否成功
 	private String msg;			// 返回信息

@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.Date;
 
 import com.pojo.login.User;
 
@@ -52,9 +54,12 @@ public class UserDAO {
 	
 	public int insert(User user){
 		try {
-			String sql = "insert into user(userName) values(?)";
+			Date date=new Date();
+			Timestamp t = new Timestamp(date.getTime());
+			String sql = "insert into user(userName,registerTime) values(?,?)";
 			pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);	// 返回数据表的主key
 			pst.setString(1, user.getName());
+			pst.setTimestamp(2, t);						//注册时间
 			pst.executeUpdate();
 			ResultSet rs = pst.getGeneratedKeys();		// 获取主key
 			if(rs.next()){

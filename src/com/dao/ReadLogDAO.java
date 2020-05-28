@@ -4,7 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import com.pojo.readLog.ReadLogBook;
 
 public class ReadLogDAO {
 	private Connection conn = null;
@@ -13,6 +17,33 @@ public class ReadLogDAO {
 	public ReadLogDAO(Connection conn) {
 		super();
 		this.conn = conn;
+	}
+	
+	/**
+	 * 返回用户的最近阅读记录(前20本)
+	 * @param userId
+	 * @return
+	 */
+	public List<ReadLogBook> getReadLogBookLsit(int userId){
+		String sql = "select * from readlog where userId=? group by bookId order by readTime desc";
+		try {
+			List<ReadLogBook> list = new ArrayList<>();
+			pst = conn.prepareStatement(sql);
+			pst.setInt(1, userId);
+			ResultSet rst = pst.executeQuery();
+			int count = 0;
+			while(rst.next() && count<20) {
+				ReadLogBook book = new ReadLogBook();
+				book.setUserId(rst.getInt("userId"));
+				book.setBookId(rst.getInt("bookId"));
+				list.add(book);
+				count++;
+			}
+			return list;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public float getProgressByDate(int userId,int bookId, String date) {
@@ -34,7 +65,7 @@ public class ReadLogDAO {
 	
 	/**
 	 * 查询数据库中是否存在阅读记录
-	 * 如果存在 就从数据库中返回最新的阅读记录
+	 * 如果存在 就从数据库中返回最新的阅读记录的阅读进度
 	 * @param userId
 	 * @param bookId
 	 * @return progress -1(没有这条记录)
