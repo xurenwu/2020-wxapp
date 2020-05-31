@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.pojo.login.User;
 
@@ -71,5 +73,60 @@ public class UserDAO {
 			e.printStackTrace();
 			return -1;
 		}
+	}
+
+	public List<User> getUserList() {
+		try {
+			List<User> userList = new ArrayList<>();
+			String sql = "select * from user";
+			pst = conn.prepareStatement(sql);
+			ResultSet rst = pst.executeQuery();
+			while(rst.next()) {
+				User user = new User();
+				user.setUserId(rst.getInt("userId"));
+				user.setName(rst.getString("userName"));
+				user.setGender(rst.getString("gender"));
+				userList.add(user);
+			}
+			if(userList != null) {
+				return userList;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public boolean deleteByUserId(int userId) {
+		String sql = "delete from user where userId=?";
+		try {
+			pst = conn.prepareStatement(sql);
+			pst.setInt(1, userId);
+			pst.executeUpdate();
+			return true;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public List<User> search(String keyword){
+		String sql = "select * from user where userId='"+keyword+"'or userName='"+keyword+"'";
+		try {
+			List<User> userList = new ArrayList<>();
+			pst = conn.prepareStatement(sql);
+			ResultSet rst = pst.executeQuery();
+			while(rst.next()) {
+				User user = new User();
+				user.setUserId(rst.getInt("userId"));
+				user.setName(rst.getString("userName"));
+				user.setGender(rst.getString("gender"));
+				userList.add(user);
+			}
+			return userList;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

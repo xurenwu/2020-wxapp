@@ -17,7 +17,7 @@ import com.service.ReadLog;
 /**
  * Servlet implementation class GetCatelogue
  */
-@WebServlet("/getReadLog")
+@WebServlet("/insertReadLog")
 public class InsertReadLogServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

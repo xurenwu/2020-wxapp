@@ -12,13 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.pojo.Catelogue.Catelogue;
 import com.pojo.baseData.BaseDataPojo;
-import com.pojo.comment.Comment;
 import com.service.AllChapterService;
 
 /**
  * Servlet implementation class GetCatelogue
  */
-@WebServlet("/insertComment")
+@WebServlet("/updateCatelogue")
 public class UpdateCatelogueServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -46,9 +45,9 @@ public class UpdateCatelogueServlet extends HttpServlet {
 		Catelogue catelogue = AllChapterService.checkBookId(bookId);
 		boolean condition = AllChapterService.insertAllChapter(catelogue, bookId);
 		if(condition) {
-			out.print(new Gson().toJson(new BaseDataPojo<Comment> ("评论插入成功", true, null)));
+			out.print(new Gson().toJson(new BaseDataPojo<Catelogue> ("目录修改成功", true, null)));
 		}else {
-			out.print(new Gson().toJson(new BaseDataPojo<Comment> ("评论插入失败", false, null)));
+			out.print(new Gson().toJson(new BaseDataPojo<Catelogue> ("目录修改失败", false, null)));
 		}
 	}
 

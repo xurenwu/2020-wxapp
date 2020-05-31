@@ -18,7 +18,7 @@ import com.service.RankingService;
 /**
  * Servlet implementation class GetCatelogue
  */
-@WebServlet("/getBookListByCategory")
+@WebServlet("/getBookListByRankingKey")
 public class GetBookListByRankingKey extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -33,9 +33,8 @@ public class GetBookListByRankingKey extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		/**
-		 * 通过书籍id获取书籍评论
-		 */
+		
+		
 		req.setCharacterEncoding("utf-8");
 		res.setContentType("text/html;charset=utf-8");
 		
@@ -45,9 +44,9 @@ public class GetBookListByRankingKey extends HttpServlet {
 		String rankingKey = req.getParameter("rankingKey");
 		List<BookInfo> booklist = RankingService.getBookListByHeatOrLatest(20, rankingKey);
 		if(booklist != null) {
-			out.print(new Gson().toJson(new BaseListPojo<BookInfo> ("获取目录成功", true, booklist)));
+			out.print(new Gson().toJson(new BaseListPojo<BookInfo> ("获取成功", true, booklist)));
 		}else {
-			out.print(new Gson().toJson(new BaseListPojo<BookInfo> ("获取目录失败", false, null)));
+			out.print(new Gson().toJson(new BaseListPojo<BookInfo> ("获取失败", false, null)));
 		}
 	}
 

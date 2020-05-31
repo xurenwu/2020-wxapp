@@ -1,0 +1,15 @@
+
+/* pages_ranking_css */
+
+.detail{
+	width:400px;
+	overflow:hidden;
+	white-space:nowrap;
+	word-break:keep-all;
+	width: 100px;
+	height:47px;
+	text-overflow: ellipsis;
+}
+.detail div{
+	width:400px;overflow:hidden;white-space:nowrap;text-overflow: ellipsis;
+}
