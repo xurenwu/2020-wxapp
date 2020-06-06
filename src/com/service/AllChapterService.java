@@ -2,15 +2,18 @@ package com.service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.dao.BookDAO;
 import com.dao.CatelogueDAO;
 import com.pojo.Catelogue.Catelogue;
 import com.pojo.Catelogue.CatelogueUrl;
+import com.pojo.Catelogue.Chapter;
 import com.pojo.Catelogue.ChapterObject;
 import com.utils.DBUtil;
 import com.utils.HttpUtils;
+import com.utils.JavaUploadToQiNiuUtil;
 
 public class AllChapterService {
 	
@@ -34,7 +37,7 @@ public class AllChapterService {
 				/**
 				 * 插入目录的操作有待商榷,最好可以先获取该书的状态，如果是完结的就不必更新
 				 */
-				insertAllChapter(catelogue, bookId);
+//				insertAllChapter(catelogue, bookId);
 				return catelogue;
 			}else {
 				return null;
@@ -117,6 +120,106 @@ public class AllChapterService {
 				if(conn != null) {
 					DBUtil.closeConnection(conn);
 				}
+			}
+		}
+		return false;
+	}
+	
+	//获取所有的书籍的所有章节
+	public static List<Chapter> selectChapterList(){
+		Connection conn = DBUtil.getConnection();
+		CatelogueDAO cataLogueDao = new CatelogueDAO(conn);
+		try {
+			List<Chapter> chapterList = new ArrayList<>();
+			chapterList = cataLogueDao.selectChapterList();
+			if(chapterList != null) {
+				return chapterList;
+			}else {
+				return null;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(conn != null) {
+				DBUtil.closeConnection(conn);
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * 更新章节信息
+	 * @param chapter
+	 * @return
+	 */
+	public boolean updateChapter(Chapter chapter) {
+		Connection conn = DBUtil.getConnection();
+		CatelogueDAO cataLogueDao = new CatelogueDAO(conn);
+		try {
+			conn.setAutoCommit(false);
+			if(cataLogueDao.updateChapter(chapter)) {
+				//数据库更新成功后
+				//更新七牛的章节目录文件
+				CatelogueUrl catelogueUrl = selectBookId(chapter.getBookId()); 		//获取当前书籍的目录地址
+				if(catelogueUrl != null) {
+					String url = catelogueUrl.getAllChapterNameUrl();				//书籍目录的章节名字的文件地址
+					String readUrl = catelogueUrl.getAllChapterReadUrl();			//书籍目录的章节阅读内容地址
+					JavaUploadToQiNiuUtil.coverUpload("E:\\File\\temporary.txt", );	//E:\\File\\temporary.txt是本地的临时目录文件
+				}
+				
+				conn.commit();
+				return true;
+			}else {
+				return false;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}finally {
+			if(conn != null) {
+				DBUtil.closeConnection(conn);
+			}
+		}
+		return false;
+	}
+	
+	
+	/**
+	 * 插入一条章节记录
+	 * @param chapter
+	 * @return
+	 */
+	public boolean insertChapter(Chapter chapter) {
+		Connection conn = DBUtil.getConnection();
+		CatelogueDAO cataLogueDao = new CatelogueDAO(conn);
+		try {
+			conn.setAutoCommit(false);
+			if(cataLogueDao.insertChapter(chapter)) {
+				//更新七牛的章节目录文件
+				List<ChapterObject> chapterList = new ArrayList<>();
+				chapterList = cataLogueDao.selectByBookId(chapter.getBookId());
+				if(chapterList != null) {
+					JavaUploadToQiNiuUtil.upload("E:\\File\\temporary.txt", );
+					conn.commit();
+				}
+				return true;
+			}else {
+				return false;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}finally {
+			if(conn != null) {
+				DBUtil.closeConnection(conn);
 			}
 		}
 		return false;

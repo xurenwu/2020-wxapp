@@ -15,7 +15,7 @@ import com.qiniu.util.Auth;
 
 
 
-public class JavaUploadToQiNiu {
+public class JavaUploadToQiNiuUtil {
 	//设置好账号的ACCESS_KEY和SECRET_KEY
 	static String accessKey = "Nffg8yFOQYDOPZnw_PV5dOfBU50RCP8HhUur63Ft";
 	//这两个登录七牛 账号里面可以找到

@@ -1,6 +1,6 @@
 $(function(){
 	
-//	书籍列表js文件
+//	书籍章节js文件
 	var total=0;
 	var currentPageList=[];
 	var len=10;
@@ -15,7 +15,7 @@ $(function(){
 	var select_bookId_arr=new Array();
 	
 	Data={"len":len,"inital":currentPoint};
-	page_book_load("http://localhost:8080/2020_wxapp/getBookList",Data);
+	page_book_load("http://localhost:8080/2020_wxapp/getChapterList",Data);
 	
 	//页面初次加载
 	function page_book_load(url,Data){
@@ -91,10 +91,10 @@ $(function(){
 			            }
 			            $("#pages").html(str1);
 		            }else{
-		            	$("#userList").html("<p>暂无书籍信息</p>");
+		            	$("#booklist").html("<p>暂无书籍信息</p>");
 		            }
 	        	}else{
-	        		$("#userList").html("<p>暂无书籍信息</p>");
+	        		$("#booklist").html("<p>暂无书籍信息</p>");
 	        	}
 	        }
 	   });
