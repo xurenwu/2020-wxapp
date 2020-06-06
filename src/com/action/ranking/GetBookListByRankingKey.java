@@ -40,7 +40,7 @@ public class GetBookListByRankingKey extends HttpServlet {
 		
 		PrintWriter out = res.getWriter();		// 用PrintWriter对象返回数据
 		
-		//获取前台传回的书籍id
+		//获取前台传回的排行榜的索引
 		String rankingKey = req.getParameter("rankingKey");
 		List<BookInfo> booklist = RankingService.getBookListByHeatOrLatest(20, rankingKey);
 		if(booklist != null) {

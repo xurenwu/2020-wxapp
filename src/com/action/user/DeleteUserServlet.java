@@ -41,7 +41,7 @@ public class DeleteUserServlet extends HttpServlet {
 		PrintWriter out = res.getWriter();		// 用PrintWriter对象返回数据
 		
 		int userId = Integer.parseInt(req.getParameter("userId"));
-		int len = Integer.parseInt(req.getParameter("len"));
+		int len = Integer.parseInt(req.getParameter("len"));       //len=-1的时候页面
 		UserService userService = new UserService();
 		if(userService.deleteByUserId(userId)) {
 			if(len != -1) {

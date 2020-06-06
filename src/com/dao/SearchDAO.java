@@ -40,13 +40,19 @@ public class SearchDAO {
 				pst = conn.prepareStatement(sql);
 				ResultSet rst = pst.executeQuery();
 				while(rst.next()) {
-					BookInfo bookinfo = new BookInfo();
-					bookinfo.setBookId(rst.getInt("bookId"));
-					bookinfo.setAuthor(rst.getString("author"));
-					bookinfo.setBookImage(rst.getString("bookImage"));
-					bookinfo.setBookName(rst.getString("bookName"));
-					bookinfo.setDesc(rst.getString("desc"));
-					bookList.add(bookinfo);
+					BookInfo bookInfo = new BookInfo();
+					bookInfo.setBookId(rst.getInt("bookId"));
+					bookInfo.setAuthor(rst.getString("author"));
+					bookInfo.setBookName(rst.getString("bookName"));
+					bookInfo.setCategory(rst.getString("category"));
+					bookInfo.setBookImage(rst.getString("bookImage"));
+					bookInfo.setDesc(rst.getString("desc"));
+					bookInfo.setLastChapter(rst.getString("lastChapter"));
+					bookInfo.setLastChapterUrl(rst.getString("lastChapterUrl"));
+					bookInfo.setHeat(rst.getInt("heat"));
+					bookInfo.setState(rst.getString("state"));
+					bookInfo.setEnterTime(rst.getString("enterTime"));
+					bookList.add(bookInfo);
 				}
 				return bookList;
 			}catch(Exception e) {
@@ -55,5 +61,5 @@ public class SearchDAO {
 		}
 		return null;
 	}
-
+	
 }

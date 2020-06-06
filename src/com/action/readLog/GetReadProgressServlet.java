@@ -39,7 +39,7 @@ public class GetReadProgressServlet extends HttpServlet {
 		
 		PrintWriter out = res.getWriter();		// 用PrintWriter对象返回数据
 		
-		//获取前台传回的书籍id
+		//获取书籍的阅读进度
 		int userId = Integer.parseInt(req.getParameter("userId"));
 		int bookId = Integer.parseInt(req.getParameter("bookId"));
 		float progress = ReadLog.selectProgress(userId, bookId);

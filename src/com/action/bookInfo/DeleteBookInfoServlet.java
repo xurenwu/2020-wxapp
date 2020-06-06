@@ -1,7 +1,8 @@
-package com.action.readLog;
+package com.action.bookInfo;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,16 +10,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
+import com.pojo.BookInfo.BookInfo;
 import com.pojo.baseData.BaseListPojo;
-import com.pojo.readLog.ReadLogBook;
-import com.service.ReadLog;
+import com.service.BookInfoService;
+
+
 
 /**
- * Servlet implementation class GetCatelogue
+ * Servlet implementation class GetBookInfo
  */
-@WebServlet("/insertReadLog")
-public class InsertReadLogServlet extends HttpServlet {
+@WebServlet("/deleteBookInfo")
+public class DeleteBookInfoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -33,24 +37,27 @@ public class InsertReadLogServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		/**
-		 * 通过书籍id获取书籍评论
+		 * 通过获取要删除的书籍id
 		 */
 		req.setCharacterEncoding("utf-8");
 		res.setContentType("text/html;charset=utf-8");
-		
-		PrintWriter out = res.getWriter();		// 用PrintWriter对象返回数据
-		
-		
-		int userId = Integer.parseInt(req.getParameter("userId"));
-		int bookId = Integer.parseInt(req.getParameter("bookId"));
-		float progress = Float.parseFloat(req.getParameter("progress"));
-	
-		boolean condition = ReadLog.setUserReadLog(userId, bookId, progress);
-		if(condition) {
-			out.print(new Gson().toJson(new BaseListPojo<ReadLogBook> ("插入成功", true, null)));
+		PrintWriter out = res.getWriter();
+		String str = req.getParameter("bookIdArr");
+        List<Integer> bookIdlist = JSON.parseArray(str, Integer.class);
+        int len = Integer.parseInt(req.getParameter("len"));
+        System.out.println("len"+len);
+        System.out.println(bookIdlist);
+		if(BookInfoService.deleteBook(bookIdlist)) {
+			if(len != -1) {
+				System.out.println(bookIdlist);
+				req.getRequestDispatcher("getBookList").forward(req, res);
+			}else {
+				req.getRequestDispatcher("search").forward(req, res);
+			}
 		}else {
-			out.print(new Gson().toJson(new BaseListPojo<ReadLogBook> ("插入失败", false, null)));
+			out.print(new Gson().toJson(new BaseListPojo<BookInfo>("删除失败",false,null)));
 		}
+		
 	}
 
 }

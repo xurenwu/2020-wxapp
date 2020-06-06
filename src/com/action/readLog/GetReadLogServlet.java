@@ -41,7 +41,7 @@ public class GetReadLogServlet extends HttpServlet {
 		
 		PrintWriter out = res.getWriter();		// 用PrintWriter对象返回数据
 		
-		//获取前台传回的书籍id
+		//获取用户的阅读记录
 		int userId = Integer.parseInt(req.getParameter("userId"));
 		List<ReadLogBook> list = ReadLog.getReadlog(userId);
 		if(list != null) {

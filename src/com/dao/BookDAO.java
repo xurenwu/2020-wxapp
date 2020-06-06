@@ -30,6 +30,7 @@ public class BookDAO {
 			pst = conn.prepareStatement(sql);
 			BookInfo bookInfo = new BookInfo();
 			pst.setInt(1, bookId);
+			System.out.println(sql);
 			ResultSet rst = pst.executeQuery();
 			if (rst.next()) {
 				bookInfo.setBookId(rst.getInt("bookId"));
@@ -169,6 +170,78 @@ public class BookDAO {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+
+	public List<BookInfo> getBookList() {
+		try {
+			List<BookInfo> booklist = new ArrayList<>();
+			String sql = "select * from bookInfo";
+			pst = conn.prepareStatement(sql);
+			ResultSet rst = pst.executeQuery();
+			while(rst.next()) {
+				BookInfo book = new BookInfo();
+				book.setBookId(rst.getInt("bookId"));
+				book.setBookName(rst.getString("bookName"));
+				book.setAuthor(rst.getString("author"));
+				book.setBookImage(rst.getString("bookImage"));
+				book.setCategory(rst.getString("category"));
+				book.setDesc(rst.getString("desc"));
+				book.setEnterTime(rst.getString("enterTime"));
+				book.setHeat(rst.getInt("heat"));
+				book.setLastChapter(rst.getString("lastChapter"));
+				book.setLastChapterUrl(rst.getString("lastChapterUrl"));
+				book.setState(rst.getString("state"));
+				booklist.add(book);
+			}
+			if(booklist != null) {
+				return booklist;
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public boolean updateBookInfo(BookInfo bookinfo) {
+		String sql = "update bookinfo set bookName=?,author=?,bookInfo.desc=?,category=?,lastChapter=?,lastChapterUrl=?,bookImage=?,state=? where bookId=?";
+		try {
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, bookinfo.getBookName());
+			pst.setString(2, bookinfo.getAuthor());
+			pst.setString(3, bookinfo.getDesc());
+			pst.setString(4, bookinfo.getCategory());
+			pst.setString(5, bookinfo.getLastChapter());
+			pst.setString(6, bookinfo.getLastChapterUrl());
+			pst.setString(7, bookinfo.getBookImage());
+			pst.setString(8, bookinfo.getState());
+			pst.setInt(9, bookinfo.getBookId());
+			pst.executeUpdate();
+			return true;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public boolean deleteBook(int bookId) {
+		String sql = "select bookId from bookinfo where bookId=?";
+		try {
+			pst = conn.prepareStatement(sql);
+			pst.setInt(1, bookId);
+			ResultSet rst = pst.executeQuery();
+			if(rst.next()) {
+				String sql1 = "delete from bookinfo where bookId="+bookId;
+				pst = conn.prepareStatement(sql1);
+				pst.executeUpdate();
+				return true;
+			}else {
+				return false;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 }

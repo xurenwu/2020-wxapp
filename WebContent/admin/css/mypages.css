@@ -13,3 +13,31 @@
 .detail div{
 	width:400px;overflow:hidden;white-space:nowrap;text-overflow: ellipsis;
 }
+
+/* pages_booklist_css */
+
+.book_desc{
+	width:250px;
+	overflow:hidden;
+	white-space:nowrap;
+	word-break:keep-all;
+	width: 100px;
+	height:47px;
+	text-overflow: ellipsis;
+}
+.book_desc div{
+	width:250px;overflow:hidden;white-space:nowrap;text-overflow: ellipsis;
+}
+
+.inputChange::-webkit-input-placeholder{
+    color:#d66373;
+}
+.inputChange::-moz-placeholder{   /* Mozilla Firefox 19+ */
+    color:#d66373;
+}
+.inputChange:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+    color:#d66373;
+}
+.inputChange:-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
+    color:#d66373;
+}

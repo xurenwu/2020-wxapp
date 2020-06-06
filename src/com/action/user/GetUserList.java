@@ -58,7 +58,7 @@ public class GetUserList extends HttpServlet {
 		if(list != null && userList != null) {
 			out.print(new Gson().toJson(new BasePojo<User,Integer>("获取用户列表成功",true,list.size(), userList)));
 		}else {
-			out.print(new Gson().toJson(new BasePojo<User,Integer>("获取用户列表失败",true,0, null)));
+			out.print(new Gson().toJson(new BasePojo<User,Integer>("获取用户列表失败",false,0, null)));
 		}
 	}
 

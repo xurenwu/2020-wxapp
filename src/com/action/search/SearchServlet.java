@@ -41,13 +41,15 @@ public class SearchServlet extends HttpServlet {
 		
 		PrintWriter out = res.getWriter();		// 用PrintWriter对象返回数据
 		
-		//获取前台传回的书籍id
+		//搜索关键字
 		String Key = req.getParameter("Key");
+		System.out.println(Key);
 		List<BookInfo> booklist = Search.searchByKeywords(Key);
 		if(booklist != null) {
-			out.print(new Gson().toJson(new BaseListPojo<BookInfo> ("获取目录成功", true, booklist)));
+			System.out.println(123);
+			out.print(new Gson().toJson(new BaseListPojo<BookInfo> ("获取书籍成功", true, booklist)));
 		}else {
-			out.print(new Gson().toJson(new BaseListPojo<BookInfo> ("获取目录失败", false, null)));
+			out.print(new Gson().toJson(new BaseListPojo<BookInfo> ("获取书籍失败", false, null)));
 		}
 	}
 
