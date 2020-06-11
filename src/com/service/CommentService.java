@@ -98,6 +98,35 @@ public class CommentService {
 		}
 		return false;
 	}
+	public static boolean cancleComment(List<Integer> commentIdList) {
+		Connection conn = DBUtil.getConnection();
+		CommentDAO commentDAO = new CommentDAO(conn);
+		try {
+			conn.setAutoCommit(false);
+			if(commentIdList.size()>0) {
+				for(int i=0;i<commentIdList.size();i++) {
+					if(commentDAO.deleteComment(commentIdList.get(i))) {
+						continue;
+					}else {
+						return false;
+					}
+				}
+				conn.commit();
+				return true;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();	
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}finally {
+			if(conn != null)
+				DBUtil.closeConnection(conn);
+		}
+		return false;
+	}
 	
 	/**
 	 * 获取所有的评论内容通过评论id
@@ -125,6 +154,28 @@ public class CommentService {
 		}finally {
 			if(conn != null)
 			DBUtil.closeConnection(conn);
+		}
+		return null;
+	}
+	
+	/**
+	 * 获取所有的评论集合
+	 * @return
+	 */
+	public static List<Comment> getCommentList() {
+		Connection conn = DBUtil.getConnection();
+		CommentDAO commentDAO = new CommentDAO(conn);
+		List<Comment> commentList = new ArrayList<Comment>();
+		try {
+			commentList = commentDAO.selectCommentList();
+			if(commentList != null) {
+				return commentList;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(conn != null)
+				DBUtil.closeConnection(conn);
 		}
 		return null;
 	}

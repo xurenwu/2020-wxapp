@@ -87,4 +87,30 @@ public class CommentDAO {
 		}
 		return null;
 	}
+	
+	/**
+	 * 方法重写
+	 * @return
+	 */
+	public List<Comment> selectCommentList() {
+		String sql = "select * from comment order by commentTime";
+		List<Comment> commentList = new ArrayList<>();
+		try{
+			pst = conn.prepareStatement(sql);
+			ResultSet rst = pst.executeQuery();
+			while(rst.next()) {
+				Comment comment = new Comment();
+				comment.setBookId(rst.getInt("bookId"));
+				comment.setCommentId(rst.getInt("commentId"));
+				comment.setUserId(rst.getInt("userId"));
+				comment.setContent(rst.getString("commentContent"));
+				comment.setCommentTime(rst.getTimestamp("commentTime"));
+				commentList.add(comment);
+			}
+			return commentList;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

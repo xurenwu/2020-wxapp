@@ -17,8 +17,12 @@ public class TemporaryFileUtil {
 		obj.setChapterName("百年孤独");
 		obj.setChapterUrl("foreign/bngd/1000.txt");
 		list.add(obj);
+		list.add(obj);
+		list.add(obj);
+		list.add(obj);
 		try {
 			System.out.println(updateFile_chapterUrl("E:\\File\\temporary.txt",list));
+			System.out.println(updateFile_chapterName("E:\\File\\temporary.txt",list));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -37,7 +41,7 @@ public class TemporaryFileUtil {
         }
         String s1 = new String();
         for(int i=0;i<ChapterList.size();i++) {
-        	s1 += ChapterList.get(i).getChapterUrl();
+        	s1 += ChapterList.get(i).getChapterUrl() + "\n";
         }
         BufferedWriter output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f),"UTF-8"));
         output.write(s1);
@@ -59,7 +63,7 @@ public class TemporaryFileUtil {
         }
         String s1 = new String();
         for(int i=0;i<ChapterList.size();i++) {
-        	s1 += ChapterList.get(i).getChapterName();
+        	s1 += ChapterList.get(i).getChapterName() + "\n";
         }
         BufferedWriter output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f),"UTF-8"));
         output.write(s1);

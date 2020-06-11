@@ -15,7 +15,7 @@ $(function(){
 	var select_bookId_arr=new Array();
 	
 	Data={"len":len,"inital":currentPoint};
-	page_book_load("http://localhost:8080/2020_wxapp/getChapterList",Data);
+	page_book_load("http://localhost:8080/2020_wxapp/getBookList",Data);
 	
 	//页面初次加载
 	function page_book_load(url,Data){
@@ -106,18 +106,18 @@ $(function(){
 		var index = $(this).text();
 		currentPage = index;
 		currentPoint = (currentPage-1)*len
-		var url = "http://localhost:8080/2020_wxapp/getUserList"
+		var url = "http://localhost:8080/2020_wxapp/getBookList"
 		Data = {"len":len,"inital":currentPoint}
-		page_user_load(url,Data);
+		page_book_load(url,Data);
 	});
 //	上一页
 	$(this).on('click','#pre',function(){
 		if(currentPage != 1){
 			currentPage--;
 			currentPoint = (currentPage-1)*len
-			var url = "http://localhost:8080/2020_wxapp/getUserList"
+			var url = "http://localhost:8080/2020_wxapp/getBookList"
 			Data = {"len":len,"inital":currentPoint}
-			page_user_load(url,Data);
+			page_book_load(url,Data);
 		}
 	});
 	
@@ -126,9 +126,9 @@ $(function(){
 		if(currentPage != Math.ceil(total/len)){
 			currentPage++;
 			currentPoint = (currentPage-1)*len
-			var url = "http://localhost:8080/2020_wxapp/getUserList"
+			var url = "http://localhost:8080/2020_wxapp/getBookList"
 			Data = {"len":len,"inital":currentPoint}
-			page_user_load(url,Data);
+			page_book_load(url,Data);
 		}
 	});
 	

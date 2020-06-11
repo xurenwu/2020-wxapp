@@ -29,9 +29,29 @@ public class RankingService {
 		Connection conn = DBUtil.getConnection();
 		BookDAO bookDAO = new BookDAO(conn);
 		try {
-			conn.setAutoCommit(false);
 			if(bookNum != 0) {
 				bookList = bookDAO.selectBookListByHeatOrLatest(bookNum, name);
+				if(bookList != null) {
+					return bookList;
+				}else {
+					return null;
+				}
+			}else {
+				return null;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static List<BookInfo> getRankBookListByCategory(String key,String category){
+		List<BookInfo> bookList = new ArrayList<>();
+		Connection conn = DBUtil.getConnection();
+		BookDAO bookDAO = new BookDAO(conn);
+		try {
+			if(category != null && key != null) {
+				bookList = bookDAO.selectBookListByCategory(category, key);
 				if(bookList != null) {
 					return bookList;
 				}else {

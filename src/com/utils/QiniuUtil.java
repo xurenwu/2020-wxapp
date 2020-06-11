@@ -11,7 +11,7 @@ public class QiniuUtil {
 	// 在七牛注册后获得的accessKey和secretKey（改为自己的）
 	private static String accessKey = "Nffg8yFOQYDOPZnw_PV5dOfBU50RCP8HhUur63Ft";
 	private static String secretKey = "_KURs4mChIxVTMYDhGNZtHlh7UljHQzjVBqf4fKl";
-	private static String bucket = "xurrenwu-web-upload"; //七牛空间名（改为自己的）
+	private static String bucket = "2020-wxapp-qiniu"; //七牛空间名（改为自己的）
 
 	// 获取覆盖同名文件的上传凭证֤
 	public static String getToken(String key) {

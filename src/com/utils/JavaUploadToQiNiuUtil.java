@@ -85,9 +85,24 @@ public class JavaUploadToQiNiuUtil {
 		return null;
 	}
 	
+	public static boolean allUpload(String localFilePath,String key) throws IOException{
+		String name= upload(localFilePath,key);
+		if(name != null) {
+			System.out.println(name);
+			return true;
+		}else{
+			String name1 = coverUpload(localFilePath,key);
+			System.out.println("name1:"+name1);
+			if(name1!=null) {
+				return true;
+			}else{
+				return false;
+			}
+		}
+	}
 	public static void main(String[] args) {
 	    try {
-	    	String fileName = coverUpload("E:\\File\\外国小说\\百年孤独\\第一章.txt","foreign/bngd/1000.txt");
+	    	boolean fileName = allUpload("","images/bainiangudu.jpg");
 	    	System.out.println(fileName);
 	    } catch (IOException e) {
 	        e.printStackTrace();

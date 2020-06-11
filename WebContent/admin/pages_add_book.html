@@ -13,6 +13,16 @@
 <!--标签插件-->
 <link rel="stylesheet" href="js/jquery-tags-input/jquery.tagsinput.min.css">
 <link href="css/style.css" rel="stylesheet">
+<link href="css/mypages.css" rel="stylesheet">
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+<!--标签插件-->
+<script src="js/jquery-tags-input/jquery.tagsinput.min.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/qiniu.min.js"></script>
+<script type="text/javascript" src="js/my_js/addBookInfo.js"></script>
+
 </head>
   
 <body data-logobg="color_8" data-sidebarbg="color_8">
@@ -248,15 +258,19 @@
             <div class="card">
               <div class="card-body">
                 
-                <form action="#!" method="post" class="row">
+                <!-- <form class="row" autocomplete="off"> -->
+                <form class="row">
                   <div class="form-group col-md-12">
                     <label for="category">书籍分类</label>
                     <div class="form-controls">
                       <select name="category" class="form-control" id="category">
-                        <option value="1">小说</option>
-                        <option value="2">古籍</option>
-                        <option value="3">专辑</option>
-                        <option value="4">自传</option>
+                        <option value="fiction">小说</option>
+                        <option value="history">历史</option>
+                        <option value="foreign">外国小说</option>
+                        <option value="literautre">文学艺术</option>
+                        <option value="suspense">悬疑</option>
+                        <option value="philosophy">人文社科</option>
+                        <option value="scienceFiction">科幻</option>
                       </select>
                     </div>
                   </div>
@@ -266,9 +280,9 @@
                   </div>
                   <div class="form-group col-md-12">
                     <label for="author">作者</label>
-                    <input type="text" class="form-control" id="author" name="author" value="" placeholder="请输入标题" />
+                    <input type="text" class="form-control" id="author" name="author" value="" placeholder="请输入作者" />
                   </div>
-                                    <div class="form-group col-md-12">
+                  <div class="form-group col-md-12">
                     <label for="desc">简介</label>
                     <textarea class="form-control" id="desc" name="desc" rows="5" value="" placeholder="书籍简介"></textarea>
                   </div>
@@ -279,26 +293,26 @@
                       <ul class="list-inline clearfix lyear-uploads-pic">
                         <li class="col-xs-4 col-sm-3 col-md-2">
                           <figure>
-                            <img src="images/gallery/15.jpg" alt="书籍封面">
+                            <img id="book_image" src="images/gallery/15.jpg" alt="书籍封面">
                           </figure>
                         </li>
                         <li class="col-xs-4 col-sm-3 col-md-2">
-                          <a class="pic-add" id="add-pic-btn" href="#!" title="点击上传"></a>
+                          <a class="pic-add" id="add-pic-btn" href="#!" title="点击上传"><input id="uploadImage" type="file" style="display: none;"></a>
                         </li>
                       </ul>
                     </div>
                   </div>
                   <div class="form-group col-md-12">
                     <label for="bookImage">书籍封面地址</label>
-                    <input type="text" class="form-control" id="bookImage" name="bookImage" value="" />
+                    <input type="text" class="form-control" id="bookImage" name="bookImage" value="" placeholder="书籍封面地址"/>
                   </div>
                   <div class="form-group col-md-12">
                     <label for="lastChapter">最新章节</label>
-                    <input type="text" class="form-control" id="lastChapter" name="lastChapter" value="" />
+                    <input type="text" class="form-control" id="lastChapter" name="lastChapter" value="" placeholder="最新章节"/>
                   </div>
                   <div class="form-group col-md-12">
                     <label for="lastChapterUrl">最新章节地址</label>
-                    <input type="text" class="form-control" id="lastChapterUrl" name="lastChapterUrl" value=""/>
+                    <input type="text" class="form-control" id="lastChapterUrl" name="lastChapterUrl" value="" placeholder="最新章节地址"/>
                   </div>
                   <div class="form-group col-md-12">
                     <label for="heat">书籍热度</label>
@@ -306,7 +320,7 @@
                   </div>
                   <div class="form-group col-md-12">
                     <label for="state">状态</label>
-                    <div class="clearfix">
+                    <div id="status" class="clearfix">
                       <label class="lyear-radio radio-inline radio-primary">
                         <input type="radio" name="state" value="连载"><span>连载</span>
                       </label>
@@ -316,7 +330,7 @@
                     </div>
                   </div>
                   <div class="form-group col-md-12">
-                    <button type="submit" class="btn btn-primary ajax-post" target-form="add-form">确 定</button>
+                    <button id="add_bookInfo" type="button" class="btn btn-primary ajax-post" target-form="add-form">确 定</button>
                     <button type="button" class="btn btn-default" onclick="javascript:history.back(-1);return false;">返 回</button>
                   </div>
                 </form>
@@ -334,11 +348,5 @@
   </div>
 </div>
 
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
-<!--标签插件-->
-<script src="js/jquery-tags-input/jquery.tagsinput.min.js"></script>
-<script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>

@@ -26,7 +26,6 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/fastjson-1.2.2-sources.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spring-web-4.3.18.RELEASE.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/okhttp-3.2.0.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/okio-1.2.0.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/happy-dns-java-0.1.6.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/junit-4.12.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/okio-1.6.0.jar"/>

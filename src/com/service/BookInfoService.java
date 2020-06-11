@@ -140,4 +140,30 @@ public class BookInfoService {
 		return false;
 	}
 	
+	//添加书籍信息
+	public static boolean addBookInfo(BookInfo bookInfo) {
+		Connection conn = DBUtil.getConnection();
+		BookDAO bookDAO = new BookDAO(conn);
+		try {
+			conn.setAutoCommit(false);
+			if(bookDAO.addBookInfo(bookInfo)) {
+				conn.commit();
+				return true;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}finally {
+			if(conn != null) {
+				DBUtil.closeConnection(conn);
+			}
+		}
+		return false;
+	}
+	
 }

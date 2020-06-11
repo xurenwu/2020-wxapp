@@ -48,14 +48,14 @@ public class CatelogueDAO {
 	 */
 	public List<Chapter> selectChapterList() {
 		try {
-			String sql = "select * from chapterInfo";
+			String sql = "select * from chapterInfo order by chapterId";
 			pst = conn.prepareStatement(sql);
 			ResultSet rst = pst.executeQuery();
 			List<Chapter> list = new ArrayList<>();
 			while(rst.next()) {
 				Chapter chapter = new Chapter();
 				chapter.setChapterId(rst.getInt("chapterId"));
-				chapter.setBookId(rst.getInt("chapterId"));
+				chapter.setBookId(rst.getInt("bookId"));
 				chapter.setBookName(rst.getString("bookName"));
 				chapter.setChapterName(rst.getString("chapterName"));
 				chapter.setChapterUrl(rst.getString("chapterUrl"));
@@ -98,11 +98,21 @@ public class CatelogueDAO {
 	 */
 	public boolean insertChapter(Chapter chapter) {
 		try {
-			String sql = "insert into chapter(bookId,chapterName,chapterUrl) value(?,?,?)";
-			pst = conn.prepareStatement(sql);
-			pst.setInt(1, chapter.getBookId());
-			pst.setString(2, chapter.getChapterName());
-			pst.setString(3, chapter.getChapterUrl());
+			String sql = "";
+			if(chapter.getChapterId() != 0) {
+				sql = "update chapter set bookId=?,chapterName=?,chapterUrl=? where chapterId=?";
+				pst = conn.prepareStatement(sql);
+				pst.setInt(1, chapter.getBookId());
+				pst.setString(2, chapter.getChapterName());
+				pst.setString(3, chapter.getChapterUrl());
+				pst.setInt(4, chapter.getChapterId());
+			}else {
+				sql ="insert into chapter(bookId,chapterName,chapterUrl) value(?,?,?)";
+				pst = conn.prepareStatement(sql);
+				pst.setInt(1, chapter.getBookId());
+				pst.setString(2, chapter.getChapterName());
+				pst.setString(3, chapter.getChapterUrl());
+			}
 			pst.executeUpdate();
 			return true;
 		}catch(Exception e) {
@@ -119,7 +129,7 @@ public class CatelogueDAO {
 	public List<ChapterObject> selectByBookId(int bookId){
 		try {
 			List<ChapterObject> list = new ArrayList<>(); 
-			String sql = "select chapterName,chapterUrl from chapter where bookId=?";
+			String sql = "select chapterName,chapterUrl from chapter where bookId=? ORDER BY chapterId";
 			pst = conn.prepareStatement(sql);
 			pst.setInt(1,bookId);
 			ResultSet rst = pst.executeQuery();
@@ -129,9 +139,43 @@ public class CatelogueDAO {
 				chapterObj.setChapterUrl(rst.getString("chapterUrl"));
 				list.add(chapterObj);
 			}
+			return list;
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	
+	/**
+	 * 删除章节
+	 * @param chapterId	章节id
+	 * @return
+	 */
+	public boolean deleteChapterList(int chapterId) {
+		String sql = "delete from chapter where chapterId=?";
+		try {
+			pst = conn.prepareStatement(sql);
+			pst.setInt(1, chapterId);
+			pst.executeUpdate();
+			return true;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public int selectByChapterId(int chapterId) {
+		String sql = "select * from chapter where chapterId="+chapterId;
+		try {
+			pst = conn.prepareStatement(sql);
+			ResultSet rst = pst.executeQuery();
+			if(rst.next()) {
+				return rst.getInt("bookId");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 }

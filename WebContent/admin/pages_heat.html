@@ -17,7 +17,7 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
-<script type="text/javascript" src="js/my_js/booklist.js"></script>
+<script type="text/javascript" src="js/my_js/bookRanking.js"></script>
 </head>
 
 <body data-logobg="color_8" data-sidebarbg="color_8">
@@ -246,7 +246,7 @@
     <main class="lyear-layout-content">
       
       <div class="container-fluid">
-        
+        <div id="ranking_state" style="display: none;">heat</div>
         <div class="row">
           <div class="col-lg-12">
             <div class="card">
@@ -254,7 +254,8 @@
               <div class="card-toolbar clearfix">
               <div>
                <ul id="myTabs" class="nav nav-tabs" role="tablist">
-                  <li class="active"><a href="#foreign" id="foreign-tab" role="tab" data-toggle="tab">外国小说</a></li>
+                  <li class="active"><a href="#all" id="all-tab" role="tab" data-toggle="tab">全部</a></li>
+                  <li><a href="#foreign" id="foreign-tab" role="tab" data-toggle="tab">外国小说</a></li>
                   <li><a href="#fiction" role="tab" id="fiction-tab" data-toggle="tab">小说</a></li>
                   <li><a href="#literautre" role="tab" id="literautre-tab" data-toggle="tab">文学艺术</a></li>
                   <li><a href="#history" role="tab" id="history-tab" data-toggle="tab">历史</a></li>
@@ -267,7 +268,23 @@
               </div>
               <div class="card-body">
               	<div id="myTabContent" class="tab-content">
-	           		<div class="tab-pane fade active in" id="foreign">
+              		<div class="tab-pane fade active in" id="all">
+	                 	<table class="table table-hover">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>书籍编号</th>
+									<th>书籍</th>
+									<th>分类</th>
+									<th>书籍热度</th>
+								</tr>
+							</thead>
+							<tbody>
+								
+							</tbody>
+						</table>
+	                </div>
+	           		<div class="tab-pane fade" id="foreign">
 						<table class="table table-hover">
 							<thead>
 								<tr>
@@ -279,53 +296,111 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<th scope="row">1</th>
-									<td>20201000</td>
-									<td>诺威的森林</td>
-									<td>外国小说</td>
-									<td>1000</td>
-								</tr>
+								
 							</tbody>
 						</table>
 					</div>
 	                <div class="tab-pane fade" id="fiction">
-	                 
+	                 	<table class="table table-hover">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>书籍编号</th>
+									<th>书籍</th>
+									<th>分类</th>
+									<th>书籍热度</th>
+								</tr>
+							</thead>
+							<tbody>
+								
+							</tbody>
+						</table>
 	                </div>
 	                <div class="tab-pane fade" id="literautre">
-	                 
+	                 	<table class="table table-hover">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>书籍编号</th>
+									<th>书籍</th>
+									<th>分类</th>
+									<th>书籍热度</th>
+								</tr>
+							</thead>
+							<tbody>
+								
+							</tbody>
+						</table>
 	                </div>
 	                <div class="tab-pane fade" id="history">
-	                 
+	                 	<table class="table table-hover">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>书籍编号</th>
+									<th>书籍</th>
+									<th>分类</th>
+									<th>书籍热度</th>
+								</tr>
+							</thead>
+							<tbody>
+								
+							</tbody>
+						</table>
 	                </div>
 	                <div class="tab-pane fade" id="suspense">
-	                 
+	                 	<table class="table table-hover">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>书籍编号</th>
+									<th>书籍</th>
+									<th>分类</th>
+									<th>书籍热度</th>
+								</tr>
+							</thead>
+							<tbody>
+								
+							</tbody>
+						</table>
 	                </div>
 	                <div class="tab-pane fade" id="scienceFiction">
-	                 
+	                 	<table class="table table-hover">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>书籍编号</th>
+									<th>书籍</th>
+									<th>分类</th>
+									<th>书籍热度</th>
+								</tr>
+							</thead>
+							<tbody>
+								
+							</tbody>
+						</table>
 	                </div>
 	                <div class="tab-pane fade" id="philosophy">
-	                 
+	                 	<table class="table table-hover">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>书籍编号</th>
+									<th>书籍</th>
+									<th>分类</th>
+									<th>书籍热度</th>
+								</tr>
+							</thead>
+							<tbody>
+								
+							</tbody>
+						</table>
 	                </div>
            		</div>
                
-               <nav>
-                  <ul class="pagination pagination-circle">
-                    <li class="disabled">
-                      <a href="#!">
-                        <span><i class="mdi mdi-chevron-left"></i></span>
-                      </a>
-                    </li>
-                    <li class="active"><a href="#">1</a></li>
-                    <li><a href="#!">2</a></li>
-                    <li><a href="#!">3</a></li>
-                    <li><a href="#!">4</a></li>
-                    <li><a href="#!">5</a></li>
-                    <li>
-                      <a href="#!">
-                        <span><i class="mdi mdi-chevron-right"></i></span>
-                      </a>
-                    </li>
+               <nav class="pages">
+                  <ul id="pages" class="pagination pagination-circle">
+                    
                   </ul>
                 </nav>
        

@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.pojo.BookInfo.BookInfo;
@@ -140,6 +142,35 @@ public class BookDAO {
 		return null;
 	}
 	
+	public List<BookInfo> selectBookListByCategory(String category,String key){
+		List<BookInfo> booklist = new ArrayList<>();
+		String sql = "select * from bookInfo where category=? order by " + key + " desc";
+		try {
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, category);
+			ResultSet rst = pst.executeQuery();
+			while(rst.next()) {
+				BookInfo book = new BookInfo();
+				book.setBookId(rst.getInt("bookId"));
+				book.setBookName(rst.getString("bookName"));
+				book.setAuthor(rst.getString("author"));
+				book.setBookImage(rst.getString("bookImage"));
+				book.setCategory(rst.getString("category"));
+				book.setDesc(rst.getString("desc"));
+				book.setEnterTime(rst.getString("enterTime"));
+				book.setHeat(rst.getInt("heat"));
+				book.setLastChapter(rst.getString("lastChapter"));
+				book.setLastChapterUrl(rst.getString("lastChapterUrl"));
+				book.setState(rst.getString("state"));
+				booklist.add(book);
+			}
+			return booklist;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	//ranking
 	public List<BookInfo> selectBookListByHeatOrLatest(int bookNum,String name) {
 		String sql = "select * from bookInfo order by "+name+" desc";
@@ -238,6 +269,30 @@ public class BookDAO {
 			}else {
 				return false;
 			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public boolean addBookInfo(BookInfo bookinfo) {
+		Date date=new Date();
+		Timestamp t = new Timestamp(date.getTime());
+		String sql = "insert into bookinfo (bookName,author,category,bookInfo.desc,lastChapter,lastChapterUrl,bookImage,state,heat,enterTime) value(?,?,?,?,?,?,?,?,?,?)";
+		try {
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, bookinfo.getBookName());
+			pst.setString(2, bookinfo.getAuthor());
+			pst.setString(3, bookinfo.getCategory());
+			pst.setString(4, bookinfo.getDesc());
+			pst.setString(5, bookinfo.getLastChapter());
+			pst.setString(6, bookinfo.getLastChapterUrl());
+			pst.setString(7, bookinfo.getState());
+			pst.setString(8, bookinfo.getBookImage());
+			pst.setInt(9, bookinfo.getHeat());
+			pst.setTimestamp(10, t);
+			pst.executeUpdate();
+			return true;
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
