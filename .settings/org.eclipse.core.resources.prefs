@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding//WebContent/admin/css/style.css=UTF-8
 encoding//src/com/action/login=UTF-8
 encoding//src/com/pojo/login=UTF-8
 encoding//src/com/utils/HttpUtil.java=utf-8

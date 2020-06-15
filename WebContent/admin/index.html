@@ -11,6 +11,10 @@
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/materialdesignicons.min.css" rel="stylesheet">
 <link href="css/style.css" rel="stylesheet">
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="dialog/dialog_js/MiniDialog-es5.min.js"></script>
+<script type="text/javascript" src="js/my_js/index.js"></script>
+
 </head>
   
 <body data-logobg="color_8" data-sidebarbg="color_8">
@@ -27,7 +31,7 @@
         
         <nav class="sidebar-main">
           <ul class="nav nav-drawer">
-            <li class="nav-item active"> <a href="index.html"><i class="mdi mdi-home"></i> 首页</a> </li>
+            <li class="nav-item  active open"> <a href="index.html"><i class="mdi mdi-home"></i> 首页</a> </li>
             
             <li class="nav-item nav-item-has-subnav">
               <a href="javascript:void(0)"><i class=" mdi mdi-account"></i> 用户管理</a>
@@ -36,12 +40,12 @@
               </ul>
             </li>
             
-            <li class="nav-item nav-item-has-subnav">
+            <li class="nav-item nav-item-has-subnav ">
               <a href="javascript:void(0)"><i class=" mdi mdi-book-open-page-variant"></i> 书籍管理</a>
               <ul class="nav nav-subnav">
                 <li> <a href="pages_booklist.html">全部书籍</a> </li>
                 <li> <a href="pages_chapter.html">书籍章节管理</a> </li>
-                <li> <a href="pages_add_book.html">录入书籍信息</a> </li>
+                <li > <a href="pages_add_book.html">录入书籍信息</a> </li>
               </ul>
             </li>
             
@@ -85,21 +89,22 @@
               <span class="lyear-toggler-bar"></span>
               <span class="lyear-toggler-bar"></span>
             </div>
-            <span class="navbar-page-title"> 首页 </span>
+            <span class="navbar-page-title"> 录入书籍信息 </span>
           </div>
           
           <ul class="topbar-right">
-            <li class="dropdown dropdown-profile">
+           <li class="dropdown dropdown-profile">
               <a href="javascript:void(0)" data-toggle="dropdown">
-                <img class="img-avatar img-avatar-48 m-r-10" src="images/users/avatar.jpg" alt="管理员" />
-                <span>管理员 <span class="caret"></span></span>
+                <img id="adminAvatar" class="img-avatar img-avatar-48 m-r-10" src="" alt="头像" />
+                <span id="adminName">管理员 <span class="caret"></span></span>
               </a>
               <ul class="dropdown-menu dropdown-menu-right">
-                <li> <a href="pages_profile.html"><i class="mdi mdi-account"></i> 个人信息</a> </li>
-                <li> <a href="pages_edit_pwd.html"><i class="mdi mdi-lock-outline"></i> 修改密码</a> </li>
+                <li class="active"> <a href="pages_info.html"><i class="mdi mdi-account"></i> 个人信息</a> </li>
+                <li> <a href="modify_psd.html"><i class="mdi mdi-lock-outline"></i> 修改密码</a> </li>
                 <li class="divider"></li>
                 <li> <a href="pages_login.html"><i class="mdi mdi-logout-variant"></i> 退出登录</a> </li>
               </ul>
+            </li>
             </li>
             <!--切换主题配色-->
 		    <li class="dropdown dropdown-skin">
@@ -232,7 +237,6 @@
           
         </div>
       </nav>
-      
     </header>
     <!--End 头部信息-->
     
@@ -354,7 +358,7 @@
   </div>
 </div>
 
-<script type="text/javascript" src="js/jquery.min.js"></script>
+
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
