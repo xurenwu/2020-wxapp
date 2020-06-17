@@ -17,6 +17,7 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="dialog/dialog_js/MiniDialog-es5.min.js"></script>
 <script type="text/javascript" src="js/my_js/booklist.js"></script>
 </head>
 
@@ -351,7 +352,7 @@
 							</div>
 							<div class="form-group">
 								<label for="bookImage" class="control-label">书籍封面：</label>
-								<input type="text" class="form-control" id="bookImage">
+								<input type="text" class="form-control" id="bookImage" style="width: 89%;"><input type="button" id="preview" class="btn btn-secondary" value="查看" style="position:absolute;top: 383px;right: 12px; width: 60px;">
 							</div>
 							<div class="form-group">
 								<label for="lastChapter" class="control-label">最新章节：</label>
@@ -390,6 +391,25 @@ $(function(){
         $('#search-field').val(field);
         $('#search-btn').html($(this).text() + ' <span class="caret"></span>');
     });
+    
+    $("#preview").click(function(){
+    	var imageUrl = $("#bookImage").val();
+    	if(imageUrl.length>11){
+    		Dialog
+			({
+				width: 300,
+				imageContent: {
+					src: "http://qbhvuddzp.bkt.clouddn.com/"+imageUrl,
+					height: 400
+				},
+				showButton: false,
+				showTitle: false,
+				maskClose: true
+			});
+    	}else{
+    		Dialog.warn( "warn", "请输入正确的图片地址！" );
+    	}
+    })
 });
 </script>
 </body>

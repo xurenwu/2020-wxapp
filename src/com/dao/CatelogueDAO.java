@@ -178,4 +178,21 @@ public class CatelogueDAO {
 		}
 		return -1;
 	}
+
+
+	public boolean insertCatelogueUrl(CatelogueUrl catelogueUrl) {
+		String sql = "insert into catelogue(bookId,allChapterName,allChapterUrl) values(?,?,?)";
+		try {
+			pst = conn.prepareStatement(sql);
+			pst.setInt(1, catelogueUrl.getBookId());
+			pst.setString(2, catelogueUrl.getAllChapterNameUrl());
+			pst.setString(3, catelogueUrl.getAllChapterReadUrl());
+			pst.executeUpdate();
+			return true;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+		
+	}
 }

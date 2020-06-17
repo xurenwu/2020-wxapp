@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta charset="UTF-8">
 <title>个人信息</title>
 <link rel="icon" href="favicon.ico" type="image/ico">
 
@@ -11,16 +10,14 @@
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/materialdesignicons.min.css" rel="stylesheet">
 <link href="css/style.css" rel="stylesheet">
+<link href="css/mypages.css" rel="stylesheet">
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
 <script type="text/javascript" src="dialog/dialog_js/MiniDialog-es5.min.js"></script>
-<script type="text/javascript" src="js/qiniu.min.js"></script>
-
-
+<script type="text/javascript" src="js/my_js/modify_psd.js"></script>
 </head>
-  
 <body data-logobg="color_8" data-sidebarbg="color_8">
 <div class="lyear-layout-web">
   <div class="lyear-layout-container">
@@ -103,7 +100,7 @@
                 <span id="adminName">管理员 <span class="caret"></span></span>
               </a>
               <ul class="dropdown-menu dropdown-menu-right">
-                <li> <a href="pages_info.html"><i class="mdi mdi-account"></i> 个人信息</a> </li>
+                <li > <a href="pages_info.html"><i class="mdi mdi-account"></i> 个人信息</a> </li>
                 <li class="active"> <a href="modify_psd.html"><i class="mdi mdi-lock-outline"></i> 修改密码</a> </li>
                 <li class="divider"></li>
                 <li> <a href="pages_login.html"><i class="mdi mdi-logout-variant"></i> 退出登录</a> </li>
@@ -247,27 +244,27 @@
     <!--页面主要内容-->
     <main class="lyear-layout-content">
       
-       <div class="container-fluid">
+      <div class="container-fluid">
         
         <div class="row">
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body">
                 
-                <form method="post" action="#!" class="site-form">
+                <form>
                   <div class="form-group">
                     <label for="old-password">旧密码</label>
-                    <input type="password" class="form-control" name="oldpwd" id="old-password" placeholder="输入账号的原登录密码">
+                    <input type="password" class="form-control" name="oldpsd" id="old-password" placeholder="输入账号的原登录密码">
                   </div>
                   <div class="form-group">
                     <label for="new-password">新密码</label>
-                    <input type="password" class="form-control" name="newpwd" id="new-password" placeholder="输入新的密码">
+                    <input type="password" class="form-control" name="newpsd" id="new-password" placeholder="输入新的密码">
                   </div>
                   <div class="form-group">
                     <label for="confirm-password">确认新密码</label>
-                    <input type="password" class="form-control" name="confirmpwd" id="confirm-password" placeholder="请输入正确的邮箱地址">
+                    <input type="password" class="form-control" name="confirmpsd" id="confirm-password" placeholder="请输入正确的邮箱地址">
                   </div>
-                  <button type="submit" class="btn btn-primary">修改密码</button>
+                  <button id="modify" type="button" class="btn btn-primary">修改密码</button>
                 </form>
        
               </div>

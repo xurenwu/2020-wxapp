@@ -21,15 +21,17 @@ import com.utils.TemporaryFileUtil;
 public class AllChapterService {
 	
 	public static void main(String args[]) {
-//		Catelogue catelogue = checkBookId(20201000);
-//		System.out.println(insertAllChapter(catelogue,20201000));
-		Chapter chapter = new Chapter();
-		chapter.setBookId(20201000);
-//		chapter.setChapterId(2050);
-		chapter.setChapterName("编者语");
-		chapter.setBookName("挪威的森林");
-		chapter.setChapterUrl("/foreign/nwdsl/1000.txt");
-		System.out.println(insertChapter(chapter));
+		Catelogue catelogue = checkBookId(20201000);
+		System.out.println(insertAllChapter(catelogue,20201000));
+//		Chapter chapter = new Chapter();
+//		chapter.setBookId(20201002);
+////		chapter.setChapterId(2050);
+//		chapter.setChapterName("译后记");
+//		chapter.setBookName("百年孤独");
+//		chapter.setChapterUrl("/foreign/bngd/1019.txt");
+//		System.out.println(insertChapter(chapter));
+//		String[] len = chapter.getChapterUrl().split("/");
+//		System.out.println(len[len.length-3]+"/"+len[len.length-2]);
 //		System.out.println(chapter.getBookId());
 //		updateChapter(chapter);
 //		List<Chapter> list = selectChapterList();
@@ -57,7 +59,7 @@ public class AllChapterService {
 				/**
 				 * 插入目录的操作有待商榷,最好可以先获取该书的状态，如果是完结的就不必更新
 				 */
-//				insertAllChapter(catelogue, bookId);
+				insertAllChapter(catelogue, bookId);
 				return catelogue;
 			}else {
 				return null;
@@ -222,7 +224,7 @@ public class AllChapterService {
 	
 	
 	/**
-	 * 插入一条章节记录
+	 * 插入一条章节
 	 * @param chapter
 	 * @return
 	 */
@@ -230,10 +232,25 @@ public class AllChapterService {
 		Connection conn = DBUtil.getConnection();
 		CatelogueDAO cataLogueDao = new CatelogueDAO(conn);
 		try {
-//			conn.setAutoCommit(false);
 			if(cataLogueDao.insertChapter(chapter)) {			//书籍章节插入数据库成功
 				//更新七牛的章节目录文件
 				CatelogueUrl catelogueUrl = selectBookId(chapter.getBookId()); 		//获取当前书籍的目录地址
+				if(catelogueUrl == null) {
+					CatelogueUrl catelogueUrl01 = new CatelogueUrl();
+					String[] url = chapter.getChapterUrl().split("/");
+					String url01 = url[url.length-3]+"/"+url[url.length-2];
+					String chapterNameUrl = "http://qbhvuddzp.bkt.clouddn.com/"+url01+"/all_chapter_name.txt";
+					String chapterReadUrl = "http://qbhvuddzp.bkt.clouddn.com/"+url01+"/all_chapter_url.txt";
+					System.out.println(chapterNameUrl+' '+chapterReadUrl);
+					catelogueUrl01.setAllChapterNameUrl(chapterNameUrl);
+					catelogueUrl01.setAllChapterReadUrl(chapterReadUrl);
+					catelogueUrl01.setBookId(chapter.getBookId());
+					if(insertCatelogueUrl(catelogueUrl01)) {
+						catelogueUrl = catelogueUrl01;
+					}else {
+						return false;
+					}
+				}
 				if(catelogueUrl != null) {
 					String name_url = catelogueUrl.getAllChapterNameUrl();				//书籍目录的章节名字的文件地址
 					String read_url = catelogueUrl.getAllChapterReadUrl();			//书籍目录的章节阅读内容地址
@@ -313,6 +330,32 @@ public class AllChapterService {
 				}
 			}
 				
+		}catch(Exception e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}finally {
+			if(conn != null) {
+				DBUtil.closeConnection(conn);
+			}
+		}
+		return false;
+	}
+	
+	public static boolean insertCatelogueUrl(CatelogueUrl catelogueUrl) {
+		Connection conn = DBUtil.getConnection();
+		CatelogueDAO cataLogueDao = new CatelogueDAO(conn);
+		try {
+			conn.setAutoCommit(false);
+			if(cataLogueDao.insertCatelogueUrl(catelogueUrl)) {
+				conn.commit();
+				return true;
+			}else {
+				return false;
+			}
 		}catch(Exception e) {
 			e.printStackTrace();
 			try {

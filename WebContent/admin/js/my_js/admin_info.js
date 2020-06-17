@@ -1,10 +1,9 @@
 $(function(){
-	console.log("初次页面加载");
+	console.log("heloo");
 	
 	var adminJsonStr = sessionStorage.getItem('adminInfo');
 	
 	var inital_adminInfo = JSON.parse(adminJsonStr);
-	console.log(inital_adminInfo)
 	var adminInfo = {};
 	var file_path = null;		//临时文件
 	var key = "";			//上传的文件名
@@ -17,7 +16,11 @@ $(function(){
 		// 限制上传文件类型
 		mimeType: null
 	};
-	load_info_page();
+	if(inital_adminInfo==null){
+		window.location.href = "http://localhost:8080/2020_wxapp/admin/pages_login.html";
+	}else{
+		load_info_page();
+	}
 	function load_info_page(){
 		console.log(inital_adminInfo.admin_avatar);
 		$("#adminName").html(inital_adminInfo.admin_nickname);

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -17,9 +18,18 @@ public class CommentService {
 	 */
 	
 	public static void main(String []args) {
-		System.out.println(getCommentById(20201000).get(0).getCommentTime());
-		cancleComment(getCommentById(20201000).get(0).getCommentId());
+//		System.out.println(getCommentById(20201000).get(0).getCommentTime());
+//		cancleComment(getCommentById(20201000).get(0).getCommentId());
 //		insertComment(20200001,20201000,"徐仁武");
+		Date dNow = new Date();   //当前时间
+		Date dBefore = new Date();
+
+		Calendar calendar = Calendar.getInstance(); //得到日历
+		calendar.setTime(dNow);//把当前时间赋给日历
+		calendar.add(Calendar.DAY_OF_MONTH, -1);  //设置为前一天
+		dBefore = calendar.getTime();   //得到前一天的时间
+		Timestamp t = new Timestamp(dBefore.getTime());
+		System.out.println(t);
 	}
 	
 	/**

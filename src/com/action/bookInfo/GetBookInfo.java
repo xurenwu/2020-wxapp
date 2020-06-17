@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.pojo.BookInfo.BookInfo;
+import com.pojo.baseData.BaseDataPojo;
 import com.service.BookInfoService;
 
 /**
@@ -38,8 +39,16 @@ public class GetBookInfo extends HttpServlet {
 		res.setContentType("text/html;charset=utf-8");
 		PrintWriter out = res.getWriter();
 		int bookId = Integer.parseInt(req.getParameter("bookId"));
-		BookInfo bookInfo = BookInfoService.getBookInfo(bookId);
-		out.print(new Gson().toJson(bookInfo));
+		if(bookId>0) {
+			BookInfo bookInfo = BookInfoService.getBookInfo(bookId);
+			if(bookInfo != null) {
+				out.print(new Gson().toJson(new BaseDataPojo<BookInfo>("获书籍成功",true,bookInfo)));
+			}else {
+				out.print(new Gson().toJson(new BaseDataPojo<BookInfo>("没有该书籍信息",false,null)));
+			}
+		}else {
+			out.print(new Gson().toJson(new BaseDataPojo<BookInfo>("获书籍失败",false,null)));
+		}
 	}
 
 }

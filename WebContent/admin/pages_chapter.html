@@ -17,6 +17,8 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/qiniu.min.js"></script>
+<script type="text/javascript" src="dialog/dialog_js/MiniDialog-es5.min.js"></script>
 <script type="text/javascript" src="js/my_js/chapter.js"></script>
 </head>
 
@@ -252,7 +254,7 @@
             <div class="card">
               <div class="card-toolbar clearfix">
                 <div class="toolbar-btn-action">
-                  <a class="btn btn-primary m-r-5" href="#"><i class="mdi mdi-plus"></i> 添加章节</a>
+                  <a class="btn btn-primary m-r-5" href="#addChapter_Modal" data-toggle="modal"><i class="mdi mdi-plus"></i> 添加章节</a>
                   <a id="delete_chapter_list" class="btn btn-cyan" href="#!"><i class="mdi mdi mdi-delete"></i> 删除章节</a>
                 </div>
               </div>
@@ -337,9 +339,51 @@
 				</div>
 			</div>
 		</div>
+		<!-- 新增章节 -->
+		<div class="modal fade" id="addChapter_Modal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" style="display: none;">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">×</span>
+						</button>
+						<h4 class="modal-title" id="exampleModalLabel">新增章节</h4>
+					</div>
+					<div class="modal-body">
+						<form id="form_modal">
+							<div class="form-group">
+								<label for="addChapter_bookId" class="control-label">书籍id：</label>
+								<input type="text" class="form-control" id="addChapter_bookId" >
+							</div>
+							<div class="form-group">
+								<label for="addChapter_bookname" class="control-label">书籍：</label>
+								<input type="text" class="form-control" id="addChapter_bookname">
+							</div>
+							<div class="form-group">
+								<label for="addChapter_chapterName" class="control-label">章节名：</label>
+								<input  type="text" class="form-control" id="addChapter_chapterName">
+								<input id="uploadChapter" type="file" style="display: none;">
+							</div>
+							<div class="form-group">
+								<label for="addChapter_chapterUrl" class="control-label">章节地址：</label>
+								<input type="text" class="form-control" id="addChapter_chapterUrl">
+							</div>
+							
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default"
+							data-dismiss="modal">取消</button>
+						<button id="addChapter_submit" type="button" class="btn btn-primary">提交</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
-
+<script type="text/javascript" src="dialog/dialog_js/MiniDialog-es5.min.js"></script>
 <script type="text/javascript">
 $(function(){
     $('.search-bar .dropdown-menu a').click(function() {
@@ -347,6 +391,133 @@ $(function(){
         $('#search-field').val(field);
         $('#search-btn').html($(this).text() + ' <span class="caret"></span>');
     });
+    
+    $("#addChapter_bookId").blur(function(){
+    	var bookId = $("#addChapter_bookId").val();
+    	console.log(bookId);
+    	if(bookId.length>0){
+    		$.ajax({
+    			url : "http://localhost:8080/2020_wxapp/getBookInfo",
+    			type : "POST",
+    			dataType : "json",
+    			data : {"bookId":bookId},
+    			async : false,
+    			success : function(data) {
+    				if(!data.success){
+    					Dialog
+    					({
+    						title: "添加章节",
+    						content: data.msg,
+    						draggable: true
+    					});
+    					$("#addChapter_bookId").val("");
+    				}	
+    			}
+    		})
+    		
+    	}
+    })
+    
+    var key = "";
+    var file_path="";
+    var config = {
+   		// 上传域名区域，z0指华东地区
+   		region: qiniu.region.z0
+   	};
+   	var putExtra = {
+   		// 限制上传文件类型
+   		mimeType: null
+   	};
+    
+    $("#addChapter_chapterName").click(function(){
+    	document.getElementById("uploadChapter").click();
+    })
+    
+    $("#addChapter_submit").click(function(){
+   		var data = {};
+   		
+    	data.chapterUrl =  $("#addChapter_chapterUrl").val();
+    	data.bookId = $("#addChapter_bookId").val();
+    	data.bookName = $("#addChapter_bookname").val();
+    	data.chapterName = $("#addChapter_chapterName").val();
+    	if(data.chapterUrl.length>0 && data.bookId.length && data.bookName.length && data.chapterName.length>0){
+    		data = JSON.stringify(data);
+        	console.log(data);
+        	$.ajax({
+    			url : "http://localhost:8080/2020_wxapp/addChapter",
+    			type : "POST",
+    			dataType : "json",
+    			data : {"chapter":data},
+    			async : false,
+    			success : function(data) {
+    				if(!data.success){
+    					Dialog
+    					({
+    						title: "添加章节",
+    						content: data.msg,
+    						draggable: true
+    					});
+    					$("#addChapter_bookId").val("");
+    				}else{
+    					uplaod_qiniu();
+    					currentPoint = (total-1)*len;
+    					Data = {
+							"len" : len,
+							"inital" : currentPoint
+						};
+						page_chapter_load("http://localhost:8080/2020_wxapp/getChapterList", Data);
+    				}	
+    			}
+    		})
+    	}
+    	else{
+    		Dialog.warn( "章节上传：", "章节信息不完整" );
+    	}
+    })
+    
+    $("#uploadChapter").change(function(event){
+		var files = event.target.files,file;
+		if (files && files.length > 0) {
+			file_path = files[0];
+		    $("#addChapter_chapterName").val(file_path.name.split(".")[0]);
+		}else{
+			Dialog.info( "文件上传 ", "选择上传文件" );
+		}
+	});
+    
+  //上传到七牛云
+	function uplaod_qiniu(){
+	  key = $("#addChapter_chapterUrl").val();
+	  console.log(key);
+		//key有效
+		if(key.length>0){
+			var url = "http://localhost:8080/2020_wxapp/getQiNiuToken";
+			$.ajax({
+		        url:url,
+		        type:"POST",
+		        dataType:"json",
+		        data:{"key":key},
+		        async: false,
+		        success:function(data){
+		        	if(data.success){
+		        		//获取token成功后
+		        		var token = data.data;
+		        		console.log(token);
+		        		if(token.length>0){
+		        			var observable = qiniu.upload(file_path, key, token, putExtra, config);
+		        			var subscription = observable.subscribe(observable);
+		        			Dialog.success( "章节上传", "章节上传成功" );
+		        		}else{
+		        			Dialog.warn( "文件上传", "文件上传失败" );
+		        		}
+		        	}
+		        },
+			});
+		}else{
+			Dialog.warn( "文件上传：", "文件上传失败" );
+		}
+	}
+    
 });
 </script>
 </body>

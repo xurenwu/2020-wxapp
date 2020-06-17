@@ -251,7 +251,7 @@
               <div class="card-body clearfix">
                 <div class="pull-right">
                   <p class="h6 text-white m-t-0">用户总数</p>
-                  <p class="h3 text-white m-b-0">10</p>
+                  <p id="allUserNum" class="h3 text-white m-b-0">10</p>
                 </div>
                 <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-translucent"><i class="mdi mdi-account fa-1-5x"></i></span> </div>
               </div>
@@ -263,7 +263,7 @@
               <div class="card-body clearfix">
                 <div class="pull-right">
                   <p class="h6 text-white m-t-0">收录书籍总量</p>
-                  <p class="h3 text-white m-b-0">34</p>
+                  <p id="allBookNum" class="h3 text-white m-b-0">34</p>
                 </div>
                 <div class="pull-left"> <span class="img-avatar img-avatar-48 bg-translucent"><i class="mdi mdi-book fa-1-5x"></i></span> </div>
               </div>
@@ -302,49 +302,8 @@
           
           <div class="col-lg-12">
             <div class="card">
-              <div class="card-header">
-                <h4>关于悦读</h4>
-              </div>
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>##</th>
-                        <th>##</th>
-                        <th>##</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>设计新主题</td>
-                        <td>10/02/2019</td>
-                        <td>12/05/2019</td>
-                        <td><span class="label label-warning">待定</span></td>
-                        <td>
-                          <div class="progress progress-striped progress-sm">
-                            <div class="progress-bar progress-bar-warning" style="width: 45%;"></div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>2</td>
-                        <td>网站重新设计</td>
-                        <td>01/03/2019</td>
-                       <td>12/04/2019</td>
-                        <td><span class="label label-success">进行中</span></td>
-                        <td>
-                          <div class="progress progress-striped progress-sm">
-                            <div class="progress-bar progress-bar-success" style="width: 30%;"></div>
-                          </div>
-                        </td>
-                      </tr>
-
-                    </tbody>
-                  </table>
-                </div>
+              <div class="card-header" style="text-align: center;">
+                <h4>悦读版权：@jju</h4>
               </div>
             </div>
           </div>
@@ -367,11 +326,50 @@
 <script type="text/javascript" src="js/Chart.js"></script>
 <script type="text/javascript">
 $(document).ready(function(e) {
+	var booklist = [];
+	var userlist = [];
+	var allUserNum = 0;
+	var allBookNum = 0;
+	
+	getUserBookNum();
+	
+	if(booklist.length==8){
+		allBookNum = booklist[7];
+		booklist.pop();
+	}
+	if(userlist.length==8){
+		allUserNum = userlist[7];
+		userlist.pop();
+	}
+	console.log(allUserNum+" "+allBookNum);
+	$("#allUserNum").html(allUserNum);
+	$("#allBookNum").html(allBookNum);
+	function getUserBookNum(){
+		$.ajax({
+	        url:"http://localhost:8080/2020_wxapp/getUserAndBookNum",
+	        type:"POST",
+	        dataType:"json",
+	        data:{},
+	        async: false,
+	        success:function(data){
+	        	if(data.success){
+	        		console.log(data.dataMap);
+	        		booklist = data.dataMap.bookList;
+	        		userlist = data.dataMap.userList;
+	        	}else{
+	        		console.log(data.msg);
+	        	}
+	        }
+		})
+	}
+	
+	
+	
     var $dashChartBarsCnt  = jQuery( '.js-chartjs-bars' )[0].getContext( '2d' ),
         $dashChartLinesCnt = jQuery( '.js-chartjs-lines' )[0].getContext( '2d' );
     
     var $dashChartBarsData = {
-		labels: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+		labels: ['第一天', '第二天', '第三天', '第四天', '第五天', '第六天', '第七天'],
 		datasets: [
 			{
 				label: '注册用户',
@@ -380,16 +378,16 @@ $(document).ready(function(e) {
 				backgroundColor: 'rgba(51,202,185,0.5)',
                 hoverBackgroundColor: "rgba(51,202,185,0.7)",
                 hoverBorderColor: "rgba(0,0,0,0)",
-				data: [25, 15, 12, 32, 48, 35, 15]
+				data: userlist
 			}
 		]
 	};
     var $dashChartLinesData = {
-		labels: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+   		labels: ['第一天', '第二天', '第三天', '第四天', '第五天', '第六天', '第七天'],
 		datasets: [
 			{
 				label: '收录书籍',
-				data: [20, 25, 40, 30, 45, 40, 55],
+				data: booklist,
 				borderColor: '#358ed7',
 				backgroundColor: 'rgba(53, 142, 215, 0.175)',
                 borderWidth: 1,

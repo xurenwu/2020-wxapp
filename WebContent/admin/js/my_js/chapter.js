@@ -15,9 +15,11 @@ $(function() {
 	var adminJsonStr = sessionStorage.getItem('adminInfo');
 	
 	var inital_adminInfo = JSON.parse(adminJsonStr);
-	console.log(inital_adminInfo);
-	
-	inital_load();
+	if(inital_adminInfo==null){
+		window.location.href = "http://localhost:8080/2020_wxapp/admin/pages_login.html";
+	}else{
+		inital_load();
+	}
 	function inital_load(){
 		$("#adminName").html(inital_adminInfo.admin_nickname);
 		$("#nickname").val(inital_adminInfo.admin_nickname);
@@ -172,7 +174,8 @@ $(function() {
 			}
 			var url="http://localhost:8080/2020_wxapp/updateChapterInfo";
 			console.log(Data);
-//				page_chapter_load(url,Data);
+			page_chapter_load(url,Data);
+			Dialog.success( "修改章节信息", "章节修改成功" );
 		}
 		
 	})
@@ -203,24 +206,38 @@ $(function() {
 	})
 	//删除章节
 	$(this).on('click','.delete_chapter',function(){
-		console.log("删除章节");
-		var delete_chapter_list=[];
 		var _this = $(this);
-		var delete_chapterId = _this.parent().parent().siblings().eq(1).prevObject[1].firstChild.data;
-		delete_chapter_list.push(delete_chapterId);
-		delete_chapter_list = JSON.stringify(delete_chapter_list);			//json序列化转化为json字符串
-		console.log(delete_chapter_list.length==currentPageList.length);
-		console.log(delete_chapter_list)
-		if(select_bookId_arr.length==currentPageList.length&&currentPage>1){
-			currentPage--;
-		}else {
-			currentPage = currentPage;
-		}
-		currentPoint = (currentPage-1)*len;
-		var url = "http://localhost:8080/2020_wxapp/deleteChapterList";
-		Data={"chapterIdList":delete_chapter_list,"inital":currentPoint,"len":len};
-		console.log(Data);
-		page_chapter_load(url,Data);
+		Dialog({
+			title: "章节删除",
+			content: "是否删除"+_this.parent().parent().siblings().eq(4).text(),
+			ok: {
+				callback: function () {
+					var delete_chapter_list=[];
+					var delete_chapterId = _this.parent().parent().siblings().eq(1).prevObject[1].firstChild.data;
+					delete_chapter_list.push(delete_chapterId);
+					delete_chapter_list = JSON.stringify(delete_chapter_list);			//json序列化转化为json字符串
+					console.log(delete_chapter_list.length==currentPageList.length);
+					console.log(delete_chapter_list)
+					if(select_bookId_arr.length==currentPageList.length&&currentPage>1){
+						currentPage--;
+					}else {
+						currentPage = currentPage;
+					}
+					currentPoint = (currentPage-1)*len;
+					var url = "http://localhost:8080/2020_wxapp/deleteChapterList";
+					Data={"chapterIdList":delete_chapter_list,"inital":currentPoint,"len":len};
+					console.log(Data);
+					page_chapter_load(url,Data);
+					Dialog.success( "删除章节信息", "章节删除成功" );
+				}
+			},
+			cancel: {
+				callback: function () {
+					return;
+				}
+			}
+		});
+		
 	})
 	//批量删除
 	$("#delete_chapter_list").click(function (){
@@ -244,5 +261,9 @@ $(function() {
 		Data={"chapterIdList":delete_chapter_list,"inital":currentPoint,"len":len};
 		console.log(Data);
 		page_chapter_load(url,Data);
+		Dialog.success( "删除章节信息", "章节删除成功" );
 	})
+	/*============================= 新增章节==========================================*/
+	
+	
 })

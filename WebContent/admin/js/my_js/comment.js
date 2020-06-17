@@ -10,9 +10,11 @@ $(function(){
 	var adminJsonStr = sessionStorage.getItem('adminInfo');
 	
 	var inital_adminInfo = JSON.parse(adminJsonStr);
-	console.log(inital_adminInfo);
-	
-	inital_load();
+	if(inital_adminInfo==null){
+		window.location.href = "http://localhost:8080/2020_wxapp/admin/pages_login.html";
+	}else{
+		inital_load();
+	}
 	function inital_load(){
 		$("#adminName").html(inital_adminInfo.admin_nickname);
 		$("#nickname").val(inital_adminInfo.admin_nickname);
@@ -136,25 +138,42 @@ $(function(){
 	
 	
 	//删除评论
-	delete_commentList
 	$(this).on('click',"#delete_comment",function(){
 		console.log("删除评论");
 		var _this = $(this);
-		var select_commentId = _this.parent().parent().siblings().eq(1).prevObject[1].firstChild.data
-		select_commentId_arr.push(select_commentId);
-		select_commentId_arr = JSON.stringify(select_commentId_arr);
-		console.log(select_commentId_arr);
-		if(select_commentId_arr.length==currentPageList.length&&currentPage>1){
-			currentPage--;
-		}else {
-			currentPage = currentPage;
-		}
-		if(select_commentId_arr.length>0){
-			var url = "http://localhost:8080/2020_wxapp/deleteCommentList";
-			Data = {"len":len,"inital":currentPoint,"commentIdList":select_commentId_arr}
-			console.log(Data);
-			page_comment_load(url,Data);
-		}
+		Dialog({
+			title: "章节删除",
+			content: "是否删除评论内容",
+			ok: {
+				callback: function () {
+					var select_commentId = _this.parent().parent().siblings().eq(1).prevObject[1].firstChild.data
+					select_commentId_arr.push(select_commentId);
+					select_commentId_arr = JSON.stringify(select_commentId_arr);
+					console.log(select_commentId_arr);
+					if(select_commentId_arr.length==currentPageList.length&&currentPage>1){
+						currentPage--;
+					}else {
+						currentPage = currentPage;
+					}
+					if(select_commentId_arr.length>0){
+						var url = "http://localhost:8080/2020_wxapp/deleteCommentList";
+						Data = {"len":len,"inital":currentPoint,"commentIdList":select_commentId_arr}
+						console.log(Data);
+						page_comment_load(url,Data);
+						Dialog.success( "删除评论", "评论删除成功！");
+					}else{
+						Dialog.warn( "删除评论", "评论删除失败！");
+					}
+				}
+			},
+			cancel: {
+				callback: function(){
+					return;
+				}
+			}
+		});
+		
+		
 	})
 	
 	//删除评论
@@ -176,6 +195,9 @@ $(function(){
 			Data = {"len":len,"inital":currentPoint,"commentIdList":select_commentId_arr}
 			console.log(Data);
 			page_comment_load(url,Data);
+			Dialog.success( "删除评论", "评论删除成功！");
+		}else{
+			Dialog.warn( "删除评论", "评论删除失败！");
 		}
 	})
 })

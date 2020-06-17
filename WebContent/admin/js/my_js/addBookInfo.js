@@ -17,13 +17,16 @@ $(function(){
 	
 	var inital_adminInfo = JSON.parse(adminJsonStr);
 	console.log(inital_adminInfo);
-	
-	inital_load();
-	function inital_load(){
-		$("#adminName").html(inital_adminInfo.admin_nickname);
-		$("#nickname").val(inital_adminInfo.admin_nickname);
-		$("#adminAvatar").attr('src',"http://qbhvuddzp.bkt.clouddn.com/"+inital_adminInfo.admin_avatar);
-	} 
+	if(inital_adminInfo==null){
+		window.location.href = "http://localhost:8080/2020_wxapp/admin/pages_login.html";
+	}else{
+		inital_load();
+		function inital_load(){
+			$("#adminName").html(inital_adminInfo.admin_nickname);
+			$("#nickname").val(inital_adminInfo.admin_nickname);
+			$("#adminAvatar").attr('src',"http://qbhvuddzp.bkt.clouddn.com/"+inital_adminInfo.admin_avatar);
+		} 
+	}
 	
 	//提交表单
 	$(this).on('click','#add_bookInfo',function(){
@@ -65,8 +68,9 @@ $(function(){
 	        success:function(data){
 	        	if(data.success){
 	        		uplaod_qiniu();
+	        		Dialog.success( "success", "书籍添加成功" );
 	        	}else{
-	        		console.log(data.msg)
+	        		Dialog.warn( "warn", "书籍上传失败" );
 	        	}
 	        }
 		})

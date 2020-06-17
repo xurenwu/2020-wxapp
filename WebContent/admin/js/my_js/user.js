@@ -9,16 +9,19 @@ $(function(){
 	var search_state = false; 		//是否在搜索页面
 	var search_key = "";			//上一次的搜索记录
 	/*初始页面加载*/
-	Data={"len":len,"inital":currentPoint};
-	page_user_load("http://localhost:8080/2020_wxapp/getUserList",Data);
-	
 	//加载页面头部
 	var adminJsonStr = sessionStorage.getItem('adminInfo');
 	
 	var inital_adminInfo = JSON.parse(adminJsonStr);
-	console.log(inital_adminInfo);
+	if(inital_adminInfo==null){
+		window.location.href = "http://localhost:8080/2020_wxapp/admin/pages_login.html";
+	}else{
+		inital_load();
+	}
+	Data={"len":len,"inital":currentPoint};
+	page_user_load("http://localhost:8080/2020_wxapp/getUserList",Data);
 	
-	inital_load();
+	
 	function inital_load(){
 		$("#adminName").html(inital_adminInfo.admin_nickname);
 		$("#nickname").val(inital_adminInfo.admin_nickname);
@@ -128,35 +131,51 @@ $(function(){
 	});
 //	删除
 	$(this).on('click','#delete_bookinfo',function(){
-		if(!search_state){
-			var userId = $(this).parent().parent().siblings().eq(1).text();
-			if(currentPageList.length == 1){
-				currentPage--;
+		var _this = $(this);
+		Dialog({
+			title: "标题",
+			content: "是否删除"+_this.parent().parent().siblings().eq(2).text(),
+			ok: {
+				callback: function () {
+					if(!search_state){
+						var userId = _this.parent().parent().siblings().eq(1).text();
+						if(currentPageList.length == 1){
+							currentPage--;
+						}
+						currentPoint = (currentPage-1)*len;
+						var url = "http://localhost:8080/2020_wxapp/deleteUser";
+						Data = {"userId":userId,"len":len,"inital":currentPoint}
+						page_user_load(url,Data);
+					}
+					else{
+						var userId = _this.parent().parent().siblings().eq(1).text();
+						var url = "http://localhost:8080/2020_wxapp/deleteUser";
+						Data = {"userId":userId,"len": -1}
+						$.ajax({
+					        url:url,
+					        type:"POST",
+					        dataType:"json",
+					        data:Data,
+					        success:function(data){
+					        	if(data.success){
+					        		var url = "http://localhost:8080/2020_wxapp/searchUser";
+					    		    Data = {"keyword":search_key};
+					    		    search_ajax(url, Data);
+					        	}
+				        	}
+					    })
+					    
+					}
+					
+				}
+			},
+			cancel: {
+				callback: function () {
+					return;
+				}
 			}
-			currentPoint = (currentPage-1)*len;
-			var url = "http://localhost:8080/2020_wxapp/deleteUser";
-			Data = {"userId":userId,"len":len,"inital":currentPoint}
-			page_user_load(url,Data);
-		}
-		else{
-			var userId = $(this).parent().parent().siblings().eq(1).text();
-			var url = "http://localhost:8080/2020_wxapp/deleteUser";
-			Data = {"userId":userId,"len": -1}
-			$.ajax({
-		        url:url,
-		        type:"POST",
-		        dataType:"json",
-		        data:Data,
-		        success:function(data){
-		        	if(data.success){
-		        		var url = "http://localhost:8080/2020_wxapp/searchUser";
-		    		    Data = {"keyword":search_key};
-		    		    search_ajax(url, Data);
-		        	}
-	        	}
-		    })
-		    
-		}
+		});
+//		
 	});
 	
 //	搜索

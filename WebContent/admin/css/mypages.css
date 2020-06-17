@@ -26,7 +26,31 @@
 	text-overflow: ellipsis;
 }
 .book_desc div{
-	width:250px;overflow:hidden;white-space:nowrap;text-overflow: ellipsis;
+	width:100px;overflow:hidden;white-space:nowrap;text-overflow: ellipsis;
+}
+.book_name{
+	width:250px;
+	overflow:hidden;
+	white-space:nowrap;
+	word-break:keep-all;
+	width: 100px;
+	height:47px;
+	text-overflow: ellipsis;
+}
+.book_name div{
+	width:100px;overflow:hidden;white-space:nowrap;text-overflow: ellipsis;
+}
+.book_last_chapter{
+	width:130px;
+	overflow:hidden;
+	white-space:nowrap;
+	word-break:keep-all;
+	width: 100px;
+	height:47px;
+	text-overflow: ellipsis;
+}
+.book_last_chapter div{
+	width:130px;overflow:hidden;white-space:nowrap;text-overflow: ellipsis;
 }
 
 .inputChange::-webkit-input-placeholder{

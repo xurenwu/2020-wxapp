@@ -1,4 +1,4 @@
-package com.action.bookInfo;
+package com.action.admin;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,20 +9,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.google.gson.Gson;
-import com.pojo.BookInfo.BookInfo;
+import com.pojo.admin.AdminInfo;
 import com.pojo.baseData.BaseDataPojo;
-import com.service.BookInfoService;
+import com.service.AdminService;
 
 
 
 /**
  * Servlet implementation class GetBookInfo
  */
-@WebServlet("/addBookInfo")
-public class AdminAddBookInfo extends HttpServlet {
+@WebServlet("/modifyAdminPsd")
+public class ModifyAdminPsd extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -42,14 +40,17 @@ public class AdminAddBookInfo extends HttpServlet {
 		req.setCharacterEncoding("utf-8");
 		res.setContentType("text/html;charset=utf-8");
 		PrintWriter out = res.getWriter();
-		String str = req.getParameter("bookInfo");
-		System.out.println(str);
-		BookInfo bookInfo = JSON.parseObject(str,new TypeReference<BookInfo>() {});
-		if(BookInfoService.addBookInfo(bookInfo)) {
-			out.print(new Gson().toJson(new BaseDataPojo<String>("书籍添加成功",true,null)));
+		String admin_name = req.getParameter("admin_name");
+		String password = req.getParameter("password");
+		
+		AdminInfo adminInfo = new AdminInfo();
+		if( AdminService.updatePsd(password, admin_name)) {
+			adminInfo = AdminService.getAdminInfo(admin_name);
+			out.print(new Gson().toJson(new BaseDataPojo<AdminInfo>("修改成功",true,adminInfo)));
 		}else {
-			out.print(new Gson().toJson(new BaseDataPojo<String>("书籍添加失败",false,null)));
+			out.print(new Gson().toJson(new BaseDataPojo<AdminInfo>("修改失败",false,null)));
 		}
+		
 	}
 
 }

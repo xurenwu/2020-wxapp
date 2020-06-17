@@ -14,16 +14,25 @@ $(function(){
 	var select_enterTime="";
 	var select_bookId_arr=new Array();
 	
+	//加载页面头部
+	var adminJsonStr = sessionStorage.getItem('adminInfo');
+	var inital_adminInfo = JSON.parse(adminJsonStr);
+	if(inital_adminInfo==null){
+		window.location.href = "http://localhost:8080/2020_wxapp/admin/pages_login.html";
+	}else{
+		
+		inital_load();
+		function inital_load(){
+			$("#adminName").html(inital_adminInfo.admin_nickname);
+			$("#nickname").val(inital_adminInfo.admin_nickname);
+			$("#adminAvatar").attr('src',"http://qbhvuddzp.bkt.clouddn.com/"+inital_adminInfo.admin_avatar);
+		} 
+	}
 	Data={"len":len,"inital":currentPoint};
 	page_book_load("http://localhost:8080/2020_wxapp/getBookList",Data);
 	
-	//加载页面头部
-	var adminJsonStr = sessionStorage.getItem('adminInfo');
 	
-	var inital_adminInfo = JSON.parse(adminJsonStr);
-	console.log(inital_adminInfo);
 	
-	inital_load();
 	function inital_load(){
 		$("#adminName").html(inital_adminInfo.admin_nickname);
 		$("#nickname").val(inital_adminInfo.admin_nickname);
@@ -51,11 +60,11 @@ $(function(){
 			            		+ "</label>"
 			            		+ "</td>"
 			            		+ "<td>" + currentPageList[i].bookId + "</td>"
-			            		+ "<td>" + currentPageList[i].bookName + "</td>"
+			            		+ "<td class='book_name'><div>" + currentPageList[i].bookName + "</div></td>"
 			            		+ "<td>" + currentPageList[i].author + "</td>"
 			            		+ "<td>" + currentPageList[i].category + "</td>"
 			            		+ "<td class='book_desc'><div>" + currentPageList[i].desc + "</div></td>"
-			            		+ "<td>" + currentPageList[i].lastChapter + "</td>"
+			            		+ "<td class='book_last_chapter'><div>" + currentPageList[i].lastChapter + "</div></td>"
 			            		+ "<td>" + currentPageList[i].heat + "</td>"
 			            		+ "<td><font class=\"text-success\">" + currentPageList[i].state + "</font></td>"
 			            		+ "<td>" + currentPageList[i].enterTime + "</td>"
@@ -205,8 +214,10 @@ $(function(){
 			Data.len=-1;
 			alert(Data.Key)
 			search_ajax(url,Data)
+			Dialog.success( "修改书籍信息", "书籍信息修改成功" );
 		}else{
 			page_book_load(url,Data);
+			Dialog.success( "修改书籍信息", "书籍信息修改成功" );
 		}
 			
 	})
@@ -255,30 +266,46 @@ $(function(){
 	//删除书籍
 	$(this).on('click','.delete_bookinfo',function(){
 		var _this = $(this);
-		var delete_bookId = _this.parent().parent().siblings().eq(1).prevObject[1].firstChild.data;
-		select_bookId_arr.push(delete_bookId);
-		select_bookId_arr = JSON.stringify(select_bookId_arr);			//json序列化转化为json字符串
-		console.log(select_bookId_arr.length==currentPageList.length);
-		if(!search_state){
-			//判段是不是再搜索页面，不在搜索页面不用加载分页符
-			//判断是不再书籍首页，否则如果当前页面数据删除完后当前页面currentPage要减一
-			if(select_bookId_arr.length==currentPageList.length&&currentPage>1){
-				currentPage--;
-			}else {
-				currentPage = currentPage;
+		Dialog({
+			title: "删除书籍",
+			content: "是否删除书籍："+_this.parent().parent().siblings().eq(2).text(),
+			ok: {
+				callback: function () {
+					var delete_bookId = _this.parent().parent().siblings().eq(1).prevObject[1].firstChild.data;
+					select_bookId_arr.push(delete_bookId);
+					select_bookId_arr = JSON.stringify(select_bookId_arr);			//json序列化转化为json字符串
+					console.log(select_bookId_arr.length==currentPageList.length);
+					if(!search_state){
+						//判段是不是再搜索页面，不在搜索页面不用加载分页符
+						//判断是不再书籍首页，否则如果当前页面数据删除完后当前页面currentPage要减一
+						if(select_bookId_arr.length==currentPageList.length&&currentPage>1){
+							currentPage--;
+						}else {
+							currentPage = currentPage;
+						}
+						currentPoint = (currentPage-1)*len;
+						var url = "http://localhost:8080/2020_wxapp/deleteBookInfo";
+						Data={"bookIdArr":select_bookId_arr,"inital":currentPoint,"len":len};
+						page_book_load(url,Data);
+						Dialog.success( "删除书籍", "成功删除书籍！" );
+					}else{
+						//如果是搜索页面直接设置当前页面为首页
+						currentPage = 1;
+						currentPoint = (currentPage-1)*len;
+						var url = "http://localhost:8080/2020_wxapp/deleteBookInfo";
+						Data={"Key":search_key,"bookIdArr":select_bookId_arr,"inital":currentPoint,"len":-1};
+					    search_ajax(url, Data); 
+					    Dialog.success( "删除书籍", "成功删除书籍！" );
+					}
+				}
+			},
+			cancel: {
+				callback: function () {
+					return;
+				}
 			}
-			currentPoint = (currentPage-1)*len;
-			var url = "http://localhost:8080/2020_wxapp/deleteBookInfo";
-			Data={"bookIdArr":select_bookId_arr,"inital":currentPoint,"len":len};
-			page_book_load(url,Data);
-		}else{
-			//如果是搜索页面直接设置当前页面为首页
-			currentPage = 1;
-			currentPoint = (currentPage-1)*len;
-			var url = "http://localhost:8080/2020_wxapp/deleteBookInfo";
-			Data={"Key":search_key,"bookIdArr":select_bookId_arr,"inital":currentPoint,"len":-1};
-		    search_ajax(url, Data); 
-		}
+		});
+		
 	});
 	
 	//批量删除
@@ -353,11 +380,11 @@ $(function(){
 				            		+ "</label>"
 				            		+ "</td>"
 				            		+ "<td>" + currentPageList[i].bookId + "</td>"
-				            		+ "<td>" + currentPageList[i].bookName + "</td>"
+				            		+ "<td class='book_name'><div>" + currentPageList[i].bookName + "</div></td>"
 				            		+ "<td>" + currentPageList[i].author + "</td>"
 				            		+ "<td>" + currentPageList[i].category + "</td>"
 				            		+ "<td class='book_desc'><div>" + currentPageList[i].desc + "</div></td>"
-				            		+ "<td>" + currentPageList[i].lastChapter + "</td>"
+				            		+ "<td class='book_last_chapter'><div>" + currentPageList[i].lastChapter + "</div></td>"
 				            		+ "<td>" + currentPageList[i].heat + "</td>"
 				            		+ "<td><font class=\"text-success\">" + currentPageList[i].state + "</font></td>"
 				            		+ "<td>" + currentPageList[i].enterTime + "</td>"

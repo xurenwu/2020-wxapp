@@ -287,8 +287,8 @@ public class BookDAO {
 			pst.setString(4, bookinfo.getDesc());
 			pst.setString(5, bookinfo.getLastChapter());
 			pst.setString(6, bookinfo.getLastChapterUrl());
-			pst.setString(7, bookinfo.getState());
-			pst.setString(8, bookinfo.getBookImage());
+			pst.setString(7, bookinfo.getBookImage());
+			pst.setString(8, bookinfo.getState());
 			pst.setInt(9, bookinfo.getHeat());
 			pst.setTimestamp(10, t);
 			pst.executeUpdate();

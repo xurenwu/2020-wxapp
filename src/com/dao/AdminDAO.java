@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 
 import com.pojo.admin.AdminInfo;
 
@@ -110,6 +112,74 @@ public class AdminDAO {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	public int getUserNum(Date dStart, Date dEnd) {
+		Timestamp tStart = new Timestamp(dStart.getTime());
+		Timestamp tEnd = new Timestamp(dEnd.getTime());
+		String sql = "select * from user where registerTime>? and registerTime<?";
+		try{
+			pst = conn.prepareStatement(sql);
+			pst.setTimestamp(1, tEnd);
+			pst.setTimestamp(2, tStart);
+			ResultSet rst = pst.executeQuery();
+			rst.last();
+			return rst.getRow();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
+	
+	public int getUserNum(Date dStart) {
+		Timestamp tStart = new Timestamp(dStart.getTime());
+		String sql = "select * from user where registerTime<?";
+		try{
+			pst = conn.prepareStatement(sql);
+			pst.setTimestamp(1, tStart);
+			ResultSet rst = pst.executeQuery();
+			rst.last();
+			return rst.getRow();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
+	
+	public int getBookNum(Date dStart, Date dEnd) {
+		Timestamp tStart = new Timestamp(dStart.getTime());
+		Timestamp tEnd = new Timestamp(dEnd.getTime());
+		String sql = "select * from bookinfo where enterTime>? and enterTime<?";
+		try{
+			pst = conn.prepareStatement(sql);
+			pst.setTimestamp(1, tEnd);
+			pst.setTimestamp(2, tStart);
+			ResultSet rst = pst.executeQuery();
+			rst.last();
+			return rst.getRow();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
+	
+	public int getBookNum(Date dStart) {
+		Timestamp tStart = new Timestamp(dStart.getTime());
+		String sql = "select * from bookinfo where enterTime<?";
+		try{
+			pst = conn.prepareStatement(sql);
+			pst.setTimestamp(1, tStart);
+			ResultSet rst = pst.executeQuery();
+			rst.last();
+			return rst.getRow();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return 0;
 	}
 
 }
